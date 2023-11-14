@@ -8,6 +8,7 @@ Final project for data visualisation course - Group 7
   is it shipped, which routes are taken, etc.
 - Trends in shipping and global supply chains
 - Global crisis and supply chain (e.g., Covid-19, Suez Canal)
+- Shipping trends vs the trading prices of commodity (What happend before? Predict?)
 
 **Data sources**
 - UN: Data on international trade
@@ -24,9 +25,10 @@ Final project for data visualisation course - Group 7
 **Potential visualizations**
 - Map of supply chain of various goods
 - Export / import from various countries / regions
-- Amount shipped over time
+- Amount shipped over time(by lane / port / commodity)
 - Average length of shipping routes over time
 - Port congestions during and outside of crisis
+- Port congestions vs commodity prices
 - Size of ships over time and forecasts (for fun)
 - Largest companies and their fleet sizes?
 - What happened during the Suez Canal crisis?
