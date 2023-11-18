@@ -1,0 +1,621 @@
+---
+title: "DataViz Containers"
+author: "Fredrik Lindau"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    highlight: zenburn
+    number_sections: false
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+```{r libraries}
+library(tidyverse)
+library(readxl)
+library(vroom)
+library(ggtext)
+library(ggrepel)
+library(patchwork)
+library(gghighlight)
+library(skimr)
+library(showtext)
+library(wbstats)
+library(ggforce)
+library(directlabels)
+library(plotly)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(sf)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r load_data, warning = FALSE, message = FALSE}
+
+container_throughput <- read_csv(here::here("Final-Project","Container_port_throughput.csv"))
+container_tradeflows <- read_excel(here::here("Final-Project", "Container_trade_flows.xlsx"))
+container_vessel_speed <- read_excel(here::here("Final-Project", "Container_vessel_speed.xlsx"))
+scfi_index <- read_excel(here::here("Final-Project", "Shanghai Containerized Freight Index.xlsx"))
+containers_EBIT <- read_excel(here::here("Final-Project", "Statista_avg_Ebit_margin_containers.xlsx"))
+container_routes <- read_excel(here::here("Final-Project", "TradeRoutes.xlsx"))
+container_wait_times <- read_csv(here::here("Final-Project", "Container_wait_times.csv"))
+
+container_throughput <- container_throughput %>% 
+  janitor:: clean_names() %>% 
+  rename(TEU = teu_twenty_foot_equivalent_unit)
+
+container_tradeflows <- container_tradeflows %>% 
+  pivot_longer(cols = 8:20, 
+               names_to = "year", 
+               values_to = "TEU") %>%
+  janitor:: clean_names()
+
+container_vessel_speed <- container_vessel_speed %>% 
+  janitor:: clean_names() %>% 
+  rename(knots = mid_price)
+
+scfi_index <- scfi_index %>% 
+  janitor:: clean_names()
+
+containers_EBIT <- containers_EBIT %>% 
+  janitor:: clean_names()
+
+
+
+container_ships <- read_csv(here::here("Final-Project", "Fleetsizes.csv"))
+
+container_ships <- container_ships %>% 
+  janitor:: clean_names() %>% 
+  filter(economy_label == "World", 
+         ship_type_label == "Container ships") %>% 
+  select(year, economy_label, dead_weight_tons_in_thousands, number_of_ships)
+  
+#Manually add major container ports in all regions
+major_ports <- tibble("region" = c("Asia", "Australasia & Oceania", "Europe", "Indian Sub Cont. & Middle East", "North America","North America", "South & Central America", "Sub Saharan Africa"), 
+                      "port" = c("Shanghai", "Melbourne", "Rotterdam", "Mundra", "Los Angeles", "New York", "Santos", "Durban"), 
+                      "lat" = c(30.626673223486346,-37.83811812875051, 51.9566186791634, 22.738686301038125, 33.7389288290794, 40.712125422343924, -23.96597212861736, -29.8700347330636), 
+                      "lng"= c(122.06337127281246,144.90274535193444, 4.146765090339098, 69.70476851458189,-118.26477705234562, -74.01112659484468,-46.30186859921524, 31.053221276070268))
+
+
+
+```
+
+# Plot 1: Map
+
+```{r trade_routes, warning = FALSE}
+
+glimpse(container_tradeflows)
+
+my_colours = c("#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a" )
+
+container_tradeflows_ports <- container_tradeflows %>% 
+  left_join(major_ports, by = c("origin" = "region")) %>% 
+  rename(origin_port = port, 
+         origin_lat = lat, 
+         origin_lng = lng) %>% 
+  left_join(major_ports, by = c("destination" = "region")) %>% 
+  rename(dest_port = port, 
+         dest_lat = lat, 
+         dest_lng = lng) %>% 
+  mutate(dest_lat = ifelse(origin_lat == dest_lat, NA, dest_lat), 
+         dest_lng = ifelse(origin_lng == dest_lng, NA, dest_lng)) %>% 
+  filter(!is.na(origin), 
+         year == 2022)
+
+container_tradeflows_routes <- container_tradeflows_ports %>% 
+  filter(origin != destination) %>% 
+  mutate(origin_dest = ifelse(origin == "Asia", paste(origin, destination, sep = "-"), 
+                        ifelse(origin == "Australasia & Oceania" & destination != "Asia", paste(origin, destination, sep = "-"), 
+                        ifelse(origin == "Europe" & !destination %in% c("Asia", "Australasia & Oceania"),  paste(origin, destination, sep = "-"), 
+                        ifelse(origin == "Indian Sub Cont. & Middle East" & !destination %in% c("Asia", "Australasia & Oceania", "Europe"),  paste(origin, destination, sep = "-"), 
+                        ifelse(origin == "North America" & !destination %in% c("Asia", "Australasia & Oceania", "Europe", "Indian Sub Cont. & Middle East"),  paste(origin, destination, sep = "-"), 
+                        ifelse(origin == "South & Central America" & !destination %in% c("Asia", "Australasia & Oceania", "Europe", "Indian Sub Cont. & Middle East", "North America"), paste(origin, destination, sep = "-"), paste(destination, origin, sep = "-"))
+                                                                                                                   
+                                                                                                                    )))))) %>% 
+  group_by(origin_dest) %>% 
+  mutate(total_teu = sum(teu)) %>% 
+  left_join(container_routes, by = "origin_dest") %>% 
+  select(-origin_lat.x, -origin_lng.x, -dest_lat.x, -dest_lng.x) %>% 
+  rename(origin_lat = origin_lat.y, origin_lng = origin_lng.y, 
+         dest_lat = dest_lat.y, dest_lng = dest_lng.y) %>% 
+  select(-year, -origin_port, -dest_port, -Origin, -Destination) %>% 
+  distinct(origin_dest, .keep_all = TRUE) %>% 
+  ungroup()
+
+container_routes_for_graph <- container_tradeflows_routes %>% 
+  slice_max(order_by = total_teu, n = 5) %>% 
+  mutate(origin_lat = ifelse(origin_dest == "Asia-Europe", origin_lat - 5, origin_lat),
+    stop1_lat = ifelse(origin_dest == "Asia-Europe", stop1_lat - 5, stop1_lat), 
+         stop2_lat = ifelse(origin_dest == "Asia-Europe", stop2_lat - 5, stop2_lat), 
+         stop3_lat = ifelse(origin_dest == "Asia-Europe", stop3_lat - 5, stop3_lat), 
+         )
+
+
+ top5_routes_TEU <- container_routes_for_graph %>% 
+   summarise(TEU = sum(total_teu)) %>% 
+   pull()
+
+allroutes_TEU <- container_tradeflows_routes %>% 
+  summarise(TEU = sum(total_teu)) %>% 
+  pull()
+
+percentage_in_title <- 100*round(top5_routes_TEU / allroutes_TEU,2)
+
+
+
+
+world <- ne_countries(scale = "medium", returnclass = "sf") %>% 
+  filter(name != "Antarctica")
+
+
+st_geometry(world)
+
+ggplot(data = world) + 
+  geom_sf(
+    mapping = aes(
+    geometry = geometry # use Natural Earth World boundaries
+ # fill colour= country’s region
+    ),
+    colour = "white", # white borders between regions
+    show.legend = FALSE # no legend
+    ) + 
+  theme_minimal() + 
+  coord_sf(datum = NA) + 
+  geom_point(data = container_tradeflows_ports, 
+             aes(x = origin_lng, y = origin_lat), 
+             size = 2, 
+             color = "tomato") + 
+  theme_void() + 
+  scale_color_manual(values = my_colours) + 
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = origin_lng, y = origin_lat, xend = stop1_lng, yend = stop1_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 1,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both"), 
+    position = position_dodge2(.5)
+  ) + 
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop1_lng, y = stop1_lat, xend = stop2_lng, yend = stop2_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 1,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop2_lng, y = stop2_lat, xend = stop3_lng, yend = stop3_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 1,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop3_lng, y = stop3_lat, xend = stop4_lng, yend = stop4_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 1,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop4_lng, y = stop4_lat, xend = stop5_lng, yend = stop5_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 1,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop5_lng, y = stop5_lat, xend = stop6_lng, yend = stop6_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 1,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop6_lng, y = stop6_lat, xend = stop7_lng, yend = stop7_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 1,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop7_lng, y = stop7_lat, xend = stop8_lng, yend = stop8_lat, color = factor(origin_dest)), 
+    curvature = 0,
+    size = 1,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  )   + 
+  
+  #Add curve for Asia to North America
+  geom_curve(
+  data = data.frame(x = -149.25485336305888 , y = 33.23452434669078, xend = -118.26, yend = 33.74), 
+  aes(x = x, y = y, xend = xend, yend = yend),
+  color = "#b2e061", 
+  curvature = 0,
+  size = 1,
+  arrow = arrow(length = unit(3, "pt"), type = "closed"), ends = "both") + 
+  theme(legend.position = "null")  + 
+  
+  labs(title = paste0("Top 5 major trade routes account for ", percentage_in_title, "% of global container trade"), 
+                      subtitle = "Top 5 global container routes by total TEU, 2022",
+                      caption = "Source: Bloomberg") + 
+  
+  #For North America to Europe
+  geom_label(
+    data = data.frame(x = -40.02, y = 47.58, label = "16,230 kTEU\n 10% of global trade"),  
+    aes(x = x, y =y, label = label), 
+    colour = "#bd7ebe", 
+    hjust = 0.5, 
+    lineheigh = .8, 
+    inherit.aes = FALSE, 
+    size = 3
+  ) + 
+  #Asia-Europe
+  geom_label(
+    data = data.frame(x = 35.64, y = 35.12, label = "22,130 kTEU\n 14% of global trade"),  
+    aes(x = x, y =y, label = label), 
+    colour = "#fd7f6f", 
+    hjust = 0.5, 
+    lineheigh = .8, 
+    inherit.aes = FALSE, 
+    size = 3
+  ) +
+  #North America- South America
+  geom_label(
+    data = data.frame(x = -36.99, y = 12.26, label = "11,410 kTEU\n 7% of global trade"),  
+    aes(x = x, y =y, label = label), 
+    colour = "#ffb55a", 
+    hjust = 0.5, 
+    lineheigh = .8, 
+    inherit.aes = FALSE, 
+    size = 3
+  ) +
+  #Asia-India
+  geom_label(
+    data = data.frame(x = 87.31, y = 15.54, label = "10,900 kTEU\n 7% of global trade"),  
+    aes(x = x, y =y, label = label), 
+    colour = "#7eb0d5", 
+    hjust = 0.5, 
+    lineheigh = .8, 
+    inherit.aes = FALSE, 
+    size = 3
+  )  + 
+  geom_label(
+    data = data.frame(x = 87.31, y = 15.54, label = "10,900 kTEU\n 7% of global trade"),  
+    aes(x = x, y =y, label = label), 
+    colour = "#7eb0d5", 
+    hjust = 0.5, 
+    lineheigh = .8, 
+    inherit.aes = FALSE, 
+    size = 3
+  )  + 
+  geom_label(
+    data = data.frame(x = 147.70, y = 28.88, label = "56,000 kTEU\n 34% of global trade"),  
+    aes(x = x, y =y, label = label), 
+    colour = "#b2e061", 
+    hjust = 0.5, 
+    lineheigh = .8, 
+    inherit.aes = FALSE, 
+    size = 3
+  ) 
+
+
+```
+
+# Plot 2: Port throughput
+
+```{r, container_port_throughput, warning = FALSE, message = FALSE}
+options("scipen")
+ 
+my_colours = c("#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a", "#8bd3cb")
+
+glimpse(container_throughput)
+
+annotation = "Covid-19\n pandemic\n2020-2022"
+
+locations <- c("Europe", "Asia", "Northern America", "China", "World", "North America", "South America")
+
+container_throughput %>% 
+  filter(economy_label %in% locations) %>% 
+  arrange(economy_label) %>% 
+  mutate(yoy_growth = TEU / lag(TEU) - 1) %>% 
+  mutate(yoy_growth = ifelse(year == 2010, NA, yoy_growth), 
+         name_lab = if_else(year == 2021, economy_label, NA_character_)) %>% 
+  select(year, economy_label,name_lab, TEU, yoy_growth) %>% 
+  ggplot(aes(x = year, y = TEU/1000, group = economy_label, color = economy_label)) +
+   geom_segment(
+    data = data.frame(x  = -Inf, y = 1000000, xend = 2021, yend = 1000000), 
+    aes(x = x, y = y, xend = xend, yend = yend), 
+    color = "grey90", 
+    inherit.aes = FALSE
+  ) + 
+  geom_segment(
+    data = data.frame(x  = -Inf, y = 750000, xend = 2021, yend = 750000), 
+    aes(x = x, y = y, xend = xend, yend = yend), 
+    color = "grey90", 
+    inherit.aes = FALSE
+  ) + 
+  geom_segment(
+    data = data.frame(x  = -Inf, y = 500000, xend = 2021, yend = 500000), 
+    aes(x = x, y = y, xend = xend, yend = yend), 
+    color = "grey90", 
+    inherit.aes = FALSE
+  ) + 
+  geom_segment(
+    data = data.frame(x  = -Inf, y = 250000, xend = 2021, yend = 250000), 
+    aes(x = x, y = y, xend = xend, yend = yend), 
+    color = "grey90", 
+    inherit.aes = FALSE
+  ) +
+   geom_segment(
+    data = data.frame(x  = -Inf, y = 0, xend = 2021, yend = 0), 
+    aes(x = x, y = y, xend = xend, yend = yend), 
+    color = "grey90", 
+    inherit.aes = FALSE
+  ) +
+  geom_rect(
+    xmin = 2019.5,
+    xmax = 2021.5,
+    ymin = -Inf,
+    ymax = Inf,
+    fill = "grey90",
+    alpha = 0.1,
+    inherit.aes = FALSE
+  ) + 
+  geom_line(size = 1) + 
+  expand_limits(y = 0) + 
+  theme_minimal() + 
+  labs(title = "Covid-19 had No Material Impact on Yearly Port Throughput..", 
+       subtitle = "Total port throughput in twenty-foot equivalents (TEU), 2010-2022", 
+       x = "Year", 
+       y = "'000 TEU", 
+       caption = "Source: UNCTAD") + 
+  theme(plot.title.position = "plot") + 
+  theme(panel.grid.major.x = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.grid = element_blank()) +
+
+  scale_y_continuous(label = scales::comma, limits = c(0, 1050000)) + 
+  scale_x_continuous(limits = c(2010, 2024), breaks = seq(2010, 2021, by = 2)) + 
+  geom_label(
+    data = data.frame(x = 2020.5, y = 1000000, label = annotation), 
+    aes(x = x, y = y, label = label), 
+    colour = "grey15", 
+    hjust = 0.5, 
+    lineheigh = .8, 
+    inherit.aes = FALSE, 
+    size = 3
+  ) + 
+  
+   geom_text_repel(
+    aes(color = economy_label, label = name_lab),
+    family = "Lato",
+    fontface = "bold",
+    size = 3,
+    direction = "y",
+    xlim = c(2022, NA),
+    hjust = 0,
+    segment.size = .7,
+    segment.alpha = .5,
+    segment.linetype = "dotted",
+    box.padding = 0.1,
+    segment.curvature = -0.1,
+    segment.ncp = 3,
+    segment.angle = 20
+  ) +
+  theme(legend.position = "null") + 
+  scale_colour_manual(values = my_colours)
+
+  
+```
+
+# Plot 3: Port wait times
+
+
+```{r, warning = FALSE}
+
+container_wait_times <- container_wait_times %>% 
+  janitor::clean_names()
+
+month_abbrev <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+glimpse(container_wait_times)
+
+annotation = "Covid-19 pandemic\n2020-2022"
+
+container_wait_times %>% 
+  pivot_longer(2:3, 
+               names_to = "country_type", 
+               values_to = "avg_wait_time") %>% 
+  mutate(month_name = substr(date, 1, 3), 
+         year = substr(date, 5, 9), 
+         month_num = match(month_name, month_abbrev), 
+         date = ymd(paste(year, month_num + 1, 01, sep = "-")), 
+         date = date - 1) %>% 
+  mutate(name_lab = ifelse(year == 2022, country_type, NA)) %>% 
+  ggplot(aes(x = date, y = avg_wait_time, group = country_type, color = country_type)) + 
+  
+  geom_rect(
+    xmin = ymd("2020-03-01"),
+    xmax = ymd("2022-06-01"),
+    ymin = -Inf,
+    ymax = Inf,
+    fill = "grey90",
+    alpha = 0.2,
+    inherit.aes = FALSE
+  ) + 
+  geom_line() + 
+  theme_minimal() + 
+  labs(title = "...but Significantly Increased the Average Wait Time in Ports", 
+       subtitle = "Average wait time in ports for container vessels, 2016-2023", 
+       x = "Year", 
+       y = "Hours", 
+       caption = "Source: Clarkson Research", 
+       color = "") + 
+  theme(panel.grid.major.x = element_blank(), 
+        panel.grid.minor = element_blank()) + 
+  scale_color_manual(
+    values = c(developing_countries = "#7eb0d5", developed_countries = "#fd7f6f"),
+    labels = c(developing_countries = "Developing Countries", developed_countries = "Developed Countries")
+  ) + 
+  theme(legend.position = "bottom") + 
+  scale_y_continuous(limits = c(0, 15)) + 
+  geom_label(
+    data = data.frame(x = ymd("2021-04-15"), y = 14.5, label = annotation), 
+    aes(x = x, y = y, label = label), 
+    colour = "grey15", 
+    hjust = 0.5, 
+    lineheigh = .8, 
+    inherit.aes = FALSE, 
+    size = 3
+  )
+  
+```
+
+
+#Plot 4: Container vessel size and speed
+
+
+```{r}
+
+speed <- ggplot(container_vessel_speed, aes(x = date, y = knots)) + 
+  geom_line() + 
+  expand_limits(y = 0) + 
+  theme_minimal() + 
+  labs(title = "...but the gain in size is costing them in speed", 
+       subtitle = "Average vessel speed in knots of a container vessel", 
+       x = "Year", 
+       y = "Knots", 
+       caption = "Source: UNCTAD") + 
+  theme(plot.title.position = "plot") + 
+  theme(panel.grid.minor = element_blank(), 
+        panel.grid.major.x = element_blank())
+  
+
+avg_size <- container_ships %>% 
+  filter(!is.na(number_of_ships)) %>% 
+  mutate(avg_size = 1000*dead_weight_tons_in_thousands/number_of_ships) %>% 
+  ggplot(aes(x = year, y = avg_size)) + 
+  geom_line() + 
+  expand_limits(y = 0) + 
+  theme_minimal() + 
+  labs(title = "Container vessels are becoming increasingly big...", 
+       subtitle = "Average size in deadweight tons of a container vessel", 
+       x = "Year", 
+       y = "Deadweight tons", 
+       caption = "Source: UNCTAD") + 
+  theme(plot.title.position = "plot") + 
+  scale_y_continuous(labels = scales::comma) + 
+  theme(panel.grid.minor = element_blank(), 
+        panel.grid.major.x = element_blank())
+
+avg_size + speed
+
+```
+
+
+```{r}
+
+glimpse(scfi_index)
+
+annotation = "March 11, 2020: WHO declares \n that the Covid-19 outbreak \n is a global pandemic"
+annotation2 = "Reversal in the balance of \n supply and demand due to \n macroeconomic uncertainty \n and end of Covid-19"
+
+
+scfi <- scfi_index %>% 
+  ggplot(aes(x = date, y = mid_price)) + 
+  geom_line(color = "#fd7f6f") + 
+  theme_minimal() + 
+  theme(panel.grid.major.x = element_blank(), 
+        panel.grid.minor.x = element_blank()) + 
+  labs(title = "The supply chain issues following Covid-19 significantly increased the price of container freight", 
+       subtitle = "Shanghai Containerized Freight Index, 2014-2023", 
+       x = "Date", 
+       y = "Price", 
+       caption = "Source: Bloomberg") + 
+  theme(plot.title.position = "plot") + 
+  
+  geom_curve(
+    data = data.frame(x = as.POSIXct("2019-03-11"), y = 3000, xend = as.POSIXct("2020-03-11"), yend = 920),
+    mapping = aes(x = x, y = y, xend = xend, yend = yend), 
+    colour = "grey15" , 
+    size = 0.5,
+    curvature = -0.25,
+    inherit.aes = FALSE,
+    #angle = 170,
+    arrow = arrow(length = unit(2, "mm"), type = "closed")
+  ) + 
+  geom_text(
+    data = data.frame(x = as.POSIXct("2019-02-11"), y = 3300, label = annotation),  
+    aes(x = x, y = y, label = label),
+    colour="grey15",
+    hjust = 0.5,
+    lineheight = .8,
+    inherit.aes = FALSE,
+    size = 3
+  )  + 
+  
+  geom_curve(
+    data = data.frame(x = as.POSIXct("2022-11-01"), y = 4500, xend = as.POSIXct("2022-07-01"), yend = 4250),
+    mapping = aes(x = x, y = y, xend = xend, yend = yend), 
+    colour = "grey15" , 
+    size = 0.5,
+    curvature = 0.25,
+    inherit.aes = FALSE,
+    #angle = 170,
+    arrow = arrow(length = unit(2, "mm"), type = "closed")
+  ) +
+  geom_text(
+    data = data.frame(x = as.POSIXct("2023-01-01"), y = 4850, label = annotation2),  
+    aes(x = x, y = y, label = label),
+    colour="grey15",
+    hjust = 0.5,
+    lineheight = .8,
+    inherit.aes = FALSE,
+    size = 3
+  ) 
+
+
+
+scfi
+```
+
+# Plot 5: EBIT margins of top container carriers
+
+```{r}
+
+glimpse(containers_EBIT)
+
+containers_EBIT %>%
+  mutate(year = substr(quarter, 4, length(quarter)),
+         quarter = substr(quarter, 1, 2), 
+         month = ifelse(quarter == "Q1", 03, ifelse(quarter == "Q2", 06, ifelse(quarter == "Q3", 09, 12))), 
+         year_month = as.Date(paste0(year, "-", month, "-", 30))) %>% 
+  select(year_month, average_ebit_margin) %>% 
+  ggplot(aes(x = year_month, y = average_ebit_margin)) + 
+  geom_col(fill = "#7eb0d5") + 
+  theme_minimal() + 
+  labs(title = "Significantly favouring the large container shipping companies", 
+       subtitle = "Average EBIT margins for top container shipping companies, 2014-2023", 
+       x = "Date", 
+       y = "Average EBIT margin", 
+       caption = "Source: Statista") + 
+  theme(plot.title.position = "plot") + 
+  theme(panel.grid.minor = element_blank(), 
+        panel.grid.major.x = element_blank()) + 
+  scale_y_continuous(labels = scales:: percent)
+
+
+```
+
+
