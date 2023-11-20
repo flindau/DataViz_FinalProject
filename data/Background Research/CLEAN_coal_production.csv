@@ -1,0 +1,1471 @@
+country,Year,Production_Volume
+China,1981,13.01
+China,1982,13.95
+China,1983,14.96
+China,1984,16.52
+China,1985,18.26
+China,1986,18.71
+China,1987,19.43
+China,1988,20.51
+China,1989,22.07
+China,1990,22.61
+China,1991,22.76
+China,1992,23.37
+China,1993,24.09
+China,1994,25.96
+China,1995,28.49
+China,1996,29.24
+China,1997,29.05
+China,1998,27.88
+China,1999,28.55
+China,2000,29.61
+China,2001,31.37
+China,2002,33.51
+China,2003,39.58
+China,2004,46.35
+China,2005,51.99
+China,2006,55.62
+China,2007,60.26
+China,2008,62.46
+China,2009,64.39
+China,2010,69.72
+China,2011,77.53
+China,2012,78.44
+China,2013,79.32
+China,2014,78.05
+China,2015,76.59
+China,2016,70.82
+China,2017,73.17
+China,2018,76.87
+China,2019,79.76
+China,2020,80.51
+China,2021,83.44
+China,2022,92.22
+India,1981,2.67
+India,1982,2.64
+India,1983,2.8
+India,1984,2.93
+India,1985,3.03
+India,1986,3.26
+India,1987,3.57
+India,1988,3.8
+India,1989,4.13
+India,1990,4.45
+India,1991,4.76
+India,1992,5.02
+India,1993,5.19
+India,1994,5.28
+India,1995,5.57
+India,1996,5.97
+India,1997,6.17
+India,1998,6.13
+India,1999,6
+India,2000,6.38
+India,2001,6.46
+India,2002,6.74
+India,2003,7.04
+India,2004,7.6
+India,2005,7.95
+India,2006,8.29
+India,2007,8.81
+India,2008,9.53
+India,2009,10.29
+India,2010,10.57
+India,2011,10.49
+India,2012,10.68
+India,2013,10.71
+India,2014,11.28
+India,2015,11.77
+India,2016,11.89
+India,2017,11.99
+India,2018,12.8
+India,2019,12.6
+India,2020,12.59
+India,2021,13.38
+India,2022,15.02
+Indonesia,1981,0.01
+Indonesia,1982,0.01
+Indonesia,1983,0.02
+Indonesia,1984,0.04
+Indonesia,1985,0.05
+Indonesia,1986,0.06
+Indonesia,1987,0.07
+Indonesia,1988,0.11
+Indonesia,1989,0.21
+Indonesia,1990,0.26
+Indonesia,1991,0.34
+Indonesia,1992,0.55
+Indonesia,1993,0.68
+Indonesia,1994,0.81
+Indonesia,1995,1.03
+Indonesia,1996,1.24
+Indonesia,1997,1.35
+Indonesia,1998,1.54
+Indonesia,1999,1.82
+Indonesia,2000,1.9
+Indonesia,2001,2.28
+Indonesia,2002,2.55
+Indonesia,2003,2.82
+Indonesia,2004,3.27
+Indonesia,2005,3.77
+Indonesia,2006,4.71
+Indonesia,2007,5.3
+Indonesia,2008,5.92
+Indonesia,2009,6.2
+Indonesia,2010,6.33
+Indonesia,2011,7.93
+Indonesia,2012,8.56
+Indonesia,2013,10.44
+Indonesia,2014,10.15
+Indonesia,2015,10.19
+Indonesia,2016,9.87
+Indonesia,2017,9.69
+Indonesia,2018,11.44
+Indonesia,2019,12.84
+Indonesia,2020,11.78
+Indonesia,2021,12.68
+Indonesia,2022,13.95
+US,1981,18.42
+US,1982,18.68
+US,1983,17.29
+US,1984,19.76
+US,1985,19.37
+US,1986,19.55
+US,1987,20.19
+US,1988,20.79
+US,1989,21.41
+US,1990,22.54
+US,1991,21.69
+US,1992,21.74
+US,1993,20.38
+US,1994,22.25
+US,1995,22.18
+US,1996,22.84
+US,1997,23.36
+US,1998,24.1
+US,1999,23.35
+US,2000,22.79
+US,2001,23.6
+US,2002,22.78
+US,2003,22.14
+US,2004,22.9
+US,2005,23.24
+US,2006,23.84
+US,2007,23.55
+US,2008,23.91
+US,2009,21.67
+US,2010,22.09
+US,2011,22.27
+US,2012,20.72
+US,2013,20.05
+US,2014,20.33
+US,2015,17.99
+US,2016,14.7
+US,2017,15.66
+US,2018,15.4
+US,2019,14.29
+US,2020,10.73
+US,2021,11.62
+US,2022,12.07
+Australia,1981,2.84
+Australia,1982,2.9
+Australia,1983,3.02
+Australia,1984,3.17
+Australia,1985,3.87
+Australia,1986,4.11
+Australia,1987,4.3
+Australia,1988,4.22
+Australia,1989,4.59
+Australia,1990,4.8
+Australia,1991,4.98
+Australia,1992,5.32
+Australia,1993,5.34
+Australia,1994,5.46
+Australia,1995,5.73
+Australia,1996,5.91
+Australia,1997,6.44
+Australia,1998,6.6
+Australia,1999,6.95
+Australia,2000,7.19
+Australia,2001,7.77
+Australia,2002,8.01
+Australia,2003,8.28
+Australia,2004,8.6
+Australia,2005,9
+Australia,2006,9.2
+Australia,2007,9.51
+Australia,2008,9.79
+Australia,2009,10.16
+Australia,2010,10.49
+Australia,2011,10.26
+Australia,2012,11.13
+Australia,2013,11.97
+Australia,2014,12.81
+Australia,2015,12.8
+Australia,2016,12.83
+Australia,2017,12.5
+Australia,2018,13.1
+Australia,2019,13.18
+Australia,2020,12.14
+Australia,2021,11.89
+Australia,2022,11.46
+Russian Federation,1981,NA
+Russian Federation,1982,NA
+Russian Federation,1983,NA
+Russian Federation,1984,NA
+Russian Federation,1985,7.78
+Russian Federation,1986,8.05
+Russian Federation,1987,8.11
+Russian Federation,1988,8.37
+Russian Federation,1989,8.05
+Russian Federation,1990,7.77
+Russian Federation,1991,7.14
+Russian Federation,1992,6.85
+Russian Federation,1993,6.18
+Russian Federation,1994,5.5
+Russian Federation,1995,5.22
+Russian Federation,1996,5.06
+Russian Federation,1997,4.86
+Russian Federation,1998,4.56
+Russian Federation,1999,4.93
+Russian Federation,2000,5.09
+Russian Federation,2001,5.38
+Russian Federation,2002,5.13
+Russian Federation,2003,5.55
+Russian Federation,2004,5.74
+Russian Federation,2005,5.68
+Russian Federation,2006,5.9
+Russian Federation,2007,6.01
+Russian Federation,2008,6.24
+Russian Federation,2009,5.93
+Russian Federation,2010,6.32
+Russian Federation,2011,6.6
+Russian Federation,2012,7.05
+Russian Federation,2013,7.25
+Russian Federation,2014,7.39
+Russian Federation,2015,7.8
+Russian Federation,2016,8.12
+Russian Federation,2017,8.62
+Russian Federation,2018,9.23
+Russian Federation,2019,9.23
+Russian Federation,2020,8.42
+Russian Federation,2021,9.25
+Russian Federation,2022,9.35
+South Africa,1981,3.13
+South Africa,1982,3.47
+South Africa,1983,3.5
+South Africa,1984,3.92
+South Africa,1985,4.18
+South Africa,1986,4.26
+South Africa,1987,4.25
+South Africa,1988,4.36
+South Africa,1989,4.23
+South Africa,1990,4.19
+South Africa,1991,4.28
+South Africa,1992,4.38
+South Africa,1993,4.48
+South Africa,1994,4.65
+South Africa,1995,4.9
+South Africa,1996,4.9
+South Africa,1997,5.22
+South Africa,1998,5.28
+South Africa,1999,5.29
+South Africa,2000,5.3
+South Africa,2001,5.29
+South Africa,2002,5.21
+South Africa,2003,5.64
+South Africa,2004,5.74
+South Africa,2005,5.79
+South Africa,2006,5.79
+South Africa,2007,5.79
+South Africa,2008,5.9
+South Africa,2009,5.85
+South Africa,2010,6.03
+South Africa,2011,6
+South Africa,2012,6.14
+South Africa,2013,6.08
+South Africa,2014,6.2
+South Africa,2015,5.96
+South Africa,2016,6.01
+South Africa,2017,5.97
+South Africa,2018,6.01
+South Africa,2019,6.02
+South Africa,2020,5.83
+South Africa,2021,5.44
+South Africa,2022,5.35
+Kazakhstan,1981,NA
+Kazakhstan,1982,NA
+Kazakhstan,1983,NA
+Kazakhstan,1984,NA
+Kazakhstan,1985,2.4
+Kazakhstan,1986,2.52
+Kazakhstan,1987,2.6
+Kazakhstan,1988,2.61
+Kazakhstan,1989,2.52
+Kazakhstan,1990,2.39
+Kazakhstan,1991,2.37
+Kazakhstan,1992,2.29
+Kazakhstan,1993,2.02
+Kazakhstan,1994,1.89
+Kazakhstan,1995,1.5
+Kazakhstan,1996,1.39
+Kazakhstan,1997,1.32
+Kazakhstan,1998,1.27
+Kazakhstan,1999,1.06
+Kazakhstan,2000,1.36
+Kazakhstan,2001,1.43
+Kazakhstan,2002,1.33
+Kazakhstan,2003,1.53
+Kazakhstan,2004,1.57
+Kazakhstan,2005,1.56
+Kazakhstan,2006,1.73
+Kazakhstan,2007,1.77
+Kazakhstan,2008,2.01
+Kazakhstan,2009,1.82
+Kazakhstan,2010,1.99
+Kazakhstan,2011,2.08
+Kazakhstan,2012,2.16
+Kazakhstan,2013,2.15
+Kazakhstan,2014,2.09
+Kazakhstan,2015,1.65
+Kazakhstan,2016,1.53
+Kazakhstan,2017,1.67
+Kazakhstan,2018,1.76
+Kazakhstan,2019,1.7
+Kazakhstan,2020,1.75
+Kazakhstan,2021,1.78
+Kazakhstan,2022,1.81
+Poland,1981,4.31
+Poland,1982,5.03
+Poland,1983,5.12
+Poland,1984,5.13
+Poland,1985,5.17
+Poland,1986,5.26
+Poland,1987,5.32
+Poland,1988,5.31
+Poland,1989,4.91
+Poland,1990,4.19
+Poland,1991,4.01
+Poland,1992,3.9
+Poland,1993,3.77
+Poland,1994,3.77
+Poland,1995,3.86
+Poland,1996,3.83
+Poland,1997,3.89
+Poland,1998,3.36
+Poland,1999,3.25
+Poland,2000,3.01
+Poland,2001,3.02
+Poland,2002,3
+Poland,2003,2.99
+Poland,2004,2.9
+Poland,2005,2.9
+Poland,2006,2.85
+Poland,2007,2.62
+Poland,2008,2.55
+Poland,2009,2.36
+Poland,2010,2.32
+Poland,2011,2.33
+Poland,2012,2.42
+Poland,2013,2.39
+Poland,2014,2.26
+Poland,2015,2.22
+Poland,2016,2.18
+Poland,2017,2.08
+Poland,2018,1.98
+Poland,2019,1.87
+Poland,2020,1.68
+Poland,2021,1.76
+Poland,2022,1.7
+Colombia,1981,0.12
+Colombia,1982,0.13
+Colombia,1983,0.15
+Colombia,1984,0.19
+Colombia,1985,0.26
+Colombia,1986,0.31
+Colombia,1987,0.42
+Colombia,1988,0.44
+Colombia,1989,0.55
+Colombia,1990,0.59
+Colombia,1991,0.58
+Colombia,1992,0.63
+Colombia,1993,0.63
+Colombia,1994,0.65
+Colombia,1995,0.74
+Colombia,1996,0.85
+Colombia,1997,0.95
+Colombia,1998,0.97
+Colombia,1999,0.95
+Colombia,2000,1.1
+Colombia,2001,1.27
+Colombia,2002,1.14
+Colombia,2003,1.45
+Colombia,2004,1.56
+Colombia,2005,1.72
+Colombia,2006,1.9
+Colombia,2007,2.01
+Colombia,2008,2.11
+Colombia,2009,2.09
+Colombia,2010,2.14
+Colombia,2011,2.47
+Colombia,2012,2.58
+Colombia,2013,2.47
+Colombia,2014,2.57
+Colombia,2015,2.49
+Colombia,2016,2.62
+Colombia,2017,2.63
+Colombia,2018,2.48
+Colombia,2019,2.46
+Colombia,2020,1.54
+Colombia,2021,1.7
+Colombia,2022,1.65
+Germany,1981,6.23
+Germany,1982,6.26
+Germany,1983,5.91
+Germany,1984,5.99
+Germany,1985,6.22
+Germany,1986,6.01
+Germany,1987,5.82
+Germany,1988,5.77
+Germany,1989,5.51
+Germany,1990,5.24
+Germany,1991,4.44
+Germany,1992,4.09
+Germany,1993,3.68
+Germany,1994,3.39
+Germany,1995,3.31
+Germany,1996,3.1
+Germany,1997,2.97
+Germany,1998,2.72
+Germany,1999,2.65
+Germany,2000,2.54
+Germany,2001,2.44
+Germany,2002,2.45
+Germany,2003,2.42
+Germany,2004,2.45
+Germany,2005,2.37
+Germany,2006,2.23
+Germany,2007,2.28
+Germany,2008,2.1
+Germany,2009,1.94
+Germany,2010,1.92
+Germany,2011,1.96
+Germany,2012,2
+Germany,2013,1.89
+Germany,2014,1.85
+Germany,2015,1.79
+Germany,2016,1.66
+Germany,2017,1.65
+Germany,2018,1.58
+Germany,2019,1.19
+Germany,2020,0.98
+Germany,2021,1.15
+Germany,2022,1.21
+Other Asia Pacific,1981,1.17
+Other Asia Pacific,1982,1.23
+Other Asia Pacific,1983,1.25
+Other Asia Pacific,1984,1.28
+Other Asia Pacific,1985,1.32
+Other Asia Pacific,1986,1.31
+Other Asia Pacific,1987,1.28
+Other Asia Pacific,1988,1.25
+Other Asia Pacific,1989,1.23
+Other Asia Pacific,1990,1.16
+Other Asia Pacific,1991,1.13
+Other Asia Pacific,1992,0.98
+Other Asia Pacific,1993,0.91
+Other Asia Pacific,1994,0.84
+Other Asia Pacific,1995,0.79
+Other Asia Pacific,1996,0.7
+Other Asia Pacific,1997,0.69
+Other Asia Pacific,1998,0.63
+Other Asia Pacific,1999,0.71
+Other Asia Pacific,2000,0.76
+Other Asia Pacific,2001,0.78
+Other Asia Pacific,2002,0.75
+Other Asia Pacific,2003,0.78
+Other Asia Pacific,2004,0.84
+Other Asia Pacific,2005,0.93
+Other Asia Pacific,2006,0.94
+Other Asia Pacific,2007,0.87
+Other Asia Pacific,2008,0.93
+Other Asia Pacific,2009,0.81
+Other Asia Pacific,2010,0.87
+Other Asia Pacific,2011,0.93
+Other Asia Pacific,2012,0.96
+Other Asia Pacific,2013,0.98
+Other Asia Pacific,2014,0.99
+Other Asia Pacific,2015,1.06
+Other Asia Pacific,2016,1.33
+Other Asia Pacific,2017,1.14
+Other Asia Pacific,2018,1.06
+Other Asia Pacific,2019,0.71
+Other Asia Pacific,2020,1.12
+Other Asia Pacific,2021,1.15
+Other Asia Pacific,2022,1.2
+Canada,1981,0.97
+Canada,1982,1.03
+Canada,1983,1.07
+Canada,1984,1.4
+Canada,1985,1.49
+Canada,1986,1.38
+Canada,1987,1.39
+Canada,1988,1.61
+Canada,1989,1.72
+Canada,1990,1.67
+Canada,1991,1.75
+Canada,1992,1.55
+Canada,1993,1.65
+Canada,1994,1.74
+Canada,1995,1.8
+Canada,1996,1.83
+Canada,1997,1.9
+Canada,1998,1.8
+Canada,1999,1.73
+Canada,2000,1.64
+Canada,2001,1.67
+Canada,2002,1.43
+Canada,2003,1.33
+Canada,2004,1.42
+Canada,2005,1.48
+Canada,2006,1.46
+Canada,2007,1.49
+Canada,2008,1.49
+Canada,2009,1.39
+Canada,2010,1.48
+Canada,2011,1.48
+Canada,2012,1.49
+Canada,2013,1.53
+Canada,2014,1.51
+Canada,2015,1.36
+Canada,2016,1.37
+Canada,2017,1.33
+Canada,2018,1.22
+Canada,2019,1.2
+Canada,2020,1.15
+Canada,2021,1.21
+Canada,2022,1.18
+Vietnam,1981,0.14
+Vietnam,1982,0.15
+Vietnam,1983,0.15
+Vietnam,1984,0.12
+Vietnam,1985,0.13
+Vietnam,1986,0.14
+Vietnam,1987,0.15
+Vietnam,1988,0.14
+Vietnam,1989,0.12
+Vietnam,1990,0.12
+Vietnam,1991,0.12
+Vietnam,1992,0.12
+Vietnam,1993,0.15
+Vietnam,1994,0.14
+Vietnam,1995,0.2
+Vietnam,1996,0.23
+Vietnam,1997,0.27
+Vietnam,1998,0.27
+Vietnam,1999,0.23
+Vietnam,2000,0.27
+Vietnam,2001,0.31
+Vietnam,2002,0.38
+Vietnam,2003,0.45
+Vietnam,2004,0.64
+Vietnam,2005,0.8
+Vietnam,2006,0.91
+Vietnam,2007,1
+Vietnam,2008,0.93
+Vietnam,2009,1.03
+Vietnam,2010,1.05
+Vietnam,2011,1.09
+Vietnam,2012,0.99
+Vietnam,2013,0.96
+Vietnam,2014,0.96
+Vietnam,2015,0.98
+Vietnam,2016,0.91
+Vietnam,2017,0.9
+Vietnam,2018,0.99
+Vietnam,2019,1.09
+Vietnam,2020,1.05
+Vietnam,2021,1.13
+Vietnam,2022,1.17
+Turkey,1981,0.29
+Turkey,1982,0.31
+Turkey,1983,0.33
+Turkey,1984,0.37
+Turkey,1985,0.45
+Turkey,1986,0.48
+Turkey,1987,0.51
+Turkey,1988,0.46
+Turkey,1989,0.53
+Turkey,1990,0.49
+Turkey,1991,0.46
+Turkey,1992,0.51
+Turkey,1993,0.48
+Turkey,1994,0.51
+Turkey,1995,0.51
+Turkey,1996,0.51
+Turkey,1997,0.55
+Turkey,1998,0.58
+Turkey,1999,0.56
+Turkey,2000,0.52
+Turkey,2001,0.51
+Turkey,2002,0.48
+Turkey,2003,0.45
+Turkey,2004,0.44
+Turkey,2005,0.47
+Turkey,2006,0.55
+Turkey,2007,0.62
+Turkey,2008,0.7
+Turkey,2009,0.73
+Turkey,2010,0.73
+Turkey,2011,0.75
+Turkey,2012,0.71
+Turkey,2013,0.65
+Turkey,2014,0.68
+Turkey,2015,0.54
+Turkey,2016,0.65
+Turkey,2017,0.63
+Turkey,2018,0.69
+Turkey,2019,0.73
+Turkey,2020,0.66
+Turkey,2021,0.75
+Turkey,2022,0.83
+Mongolia,1981,0.08
+Mongolia,1982,0.09
+Mongolia,1983,0.09
+Mongolia,1984,0.1
+Mongolia,1985,0.12
+Mongolia,1986,0.13
+Mongolia,1987,0.15
+Mongolia,1988,0.16
+Mongolia,1989,0.15
+Mongolia,1990,0.14
+Mongolia,1991,0.13
+Mongolia,1992,0.12
+Mongolia,1993,0.11
+Mongolia,1994,0.1
+Mongolia,1995,0.1
+Mongolia,1996,0.1
+Mongolia,1997,0.09
+Mongolia,1998,0.1
+Mongolia,1999,0.09
+Mongolia,2000,0.1
+Mongolia,2001,0.1
+Mongolia,2002,0.11
+Mongolia,2003,0.11
+Mongolia,2004,0.13
+Mongolia,2005,0.14
+Mongolia,2006,0.15
+Mongolia,2007,0.18
+Mongolia,2008,0.19
+Mongolia,2009,0.28
+Mongolia,2010,0.48
+Mongolia,2011,0.63
+Mongolia,2012,0.59
+Mongolia,2013,0.64
+Mongolia,2014,0.47
+Mongolia,2015,0.46
+Mongolia,2016,0.67
+Mongolia,2017,0.94
+Mongolia,2018,1.04
+Mongolia,2019,1.09
+Mongolia,2020,0.82
+Mongolia,2021,0.62
+Mongolia,2022,0.75
+Other Africa,1981,0.06
+Other Africa,1982,0.05
+Other Africa,1983,0.05
+Other Africa,1984,0.05
+Other Africa,1985,0.06
+Other Africa,1986,0.06
+Other Africa,1987,0.05
+Other Africa,1988,0.05
+Other Africa,1989,0.05
+Other Africa,1990,0.05
+Other Africa,1991,0.05
+Other Africa,1992,0.06
+Other Africa,1993,0.05
+Other Africa,1994,0.05
+Other Africa,1995,0.06
+Other Africa,1996,0.05
+Other Africa,1997,0.04
+Other Africa,1998,0.05
+Other Africa,1999,0.05
+Other Africa,2000,0.05
+Other Africa,2001,0.04
+Other Africa,2002,0.05
+Other Africa,2003,0.04
+Other Africa,2004,0.05
+Other Africa,2005,0.04
+Other Africa,2006,0.04
+Other Africa,2007,0.03
+Other Africa,2008,0.04
+Other Africa,2009,0.03
+Other Africa,2010,0.04
+Other Africa,2011,0.05
+Other Africa,2012,0.18
+Other Africa,2013,0.21
+Other Africa,2014,0.24
+Other Africa,2015,0.25
+Other Africa,2016,0.24
+Other Africa,2017,0.41
+Other Africa,2018,0.52
+Other Africa,2019,0.38
+Other Africa,2020,0.31
+Other Africa,2021,0.4
+Other Africa,2022,0.55
+Czech Republic,1981,1.79
+Czech Republic,1982,1.81
+Czech Republic,1983,1.83
+Czech Republic,1984,1.86
+Czech Republic,1985,1.84
+Czech Republic,1986,1.84
+Czech Republic,1987,1.82
+Czech Republic,1988,1.78
+Czech Republic,1989,1.71
+Czech Republic,1990,1.52
+Czech Republic,1991,1.42
+Czech Republic,1992,1.32
+Czech Republic,1993,1.29
+Czech Republic,1994,1.18
+Czech Republic,1995,1.14
+Czech Republic,1996,1.15
+Czech Republic,1997,1.17
+Czech Republic,1998,1.09
+Czech Republic,1999,0.97
+Czech Republic,2000,1.05
+Czech Republic,2001,1.06
+Czech Republic,2002,1.02
+Czech Republic,2003,1.02
+Czech Republic,2004,0.98
+Czech Republic,2005,0.99
+Czech Republic,2006,1
+Czech Republic,2007,1
+Czech Republic,2008,0.95
+Czech Republic,2009,0.87
+Czech Republic,2010,0.87
+Czech Republic,2011,0.88
+Czech Republic,2012,0.85
+Czech Republic,2013,0.74
+Czech Republic,2014,0.71
+Czech Republic,2015,0.71
+Czech Republic,2016,0.67
+Czech Republic,2017,0.64
+Czech Republic,2018,0.62
+Czech Republic,2019,0.56
+Czech Republic,2020,0.43
+Czech Republic,2021,0.44
+Czech Republic,2022,0.48
+Other Europe,1981,1.43
+Other Europe,1982,1.51
+Other Europe,1983,1.53
+Other Europe,1984,1.56
+Other Europe,1985,1.85
+Other Europe,1986,1.87
+Other Europe,1987,1.74
+Other Europe,1988,1.59
+Other Europe,1989,1.63
+Other Europe,1990,1.63
+Other Europe,1991,1.44
+Other Europe,1992,1.35
+Other Europe,1993,1.19
+Other Europe,1994,1.08
+Other Europe,1995,1.09
+Other Europe,1996,1.06
+Other Europe,1997,1.11
+Other Europe,1998,1
+Other Europe,1999,0.94
+Other Europe,2000,0.92
+Other Europe,2001,0.93
+Other Europe,2002,0.96
+Other Europe,2003,1.03
+Other Europe,2004,0.93
+Other Europe,2005,0.92
+Other Europe,2006,1.01
+Other Europe,2007,0.65
+Other Europe,2008,0.64
+Other Europe,2009,0.63
+Other Europe,2010,0.69
+Other Europe,2011,0.67
+Other Europe,2012,0.6
+Other Europe,2013,0.66
+Other Europe,2014,0.64
+Other Europe,2015,0.59
+Other Europe,2016,0.59
+Other Europe,2017,0.6
+Other Europe,2018,0.78
+Other Europe,2019,0.52
+Other Europe,2020,0.46
+Other Europe,2021,0.44
+Other Europe,2022,0.45
+Ukraine,1981,NA
+Ukraine,1982,NA
+Ukraine,1983,NA
+Ukraine,1984,NA
+Ukraine,1985,3.9
+Ukraine,1986,4
+Ukraine,1987,3.95
+Ukraine,1988,3.93
+Ukraine,1989,3.69
+Ukraine,1990,3.63
+Ukraine,1991,3.09
+Ukraine,1992,2.93
+Ukraine,1993,2.5
+Ukraine,1994,2.06
+Ukraine,1995,1.79
+Ukraine,1996,1.35
+Ukraine,1997,1.41
+Ukraine,1998,1.44
+Ukraine,1999,1.52
+Ukraine,2000,1.52
+Ukraine,2001,1.51
+Ukraine,2002,1.5
+Ukraine,2003,1.46
+Ukraine,2004,1.45
+Ukraine,2005,1.45
+Ukraine,2006,1.48
+Ukraine,2007,1.46
+Ukraine,2008,1.45
+Ukraine,2009,1.35
+Ukraine,2010,1.35
+Ukraine,2011,1.52
+Ukraine,2012,1.64
+Ukraine,2013,1.6
+Ukraine,2014,1.09
+Ukraine,2015,0.72
+Ukraine,2016,0.76
+Ukraine,2017,0.57
+Ukraine,2018,0.61
+Ukraine,2019,0.6
+Ukraine,2020,0.53
+Ukraine,2021,0.54
+Ukraine,2022,0.36
+Bulgaria,1981,0.2
+Bulgaria,1982,0.22
+Bulgaria,1983,0.22
+Bulgaria,1984,0.22
+Bulgaria,1985,0.21
+Bulgaria,1986,0.24
+Bulgaria,1987,0.25
+Bulgaria,1988,0.23
+Bulgaria,1989,0.23
+Bulgaria,1990,0.21
+Bulgaria,1991,0.2
+Bulgaria,1992,0.23
+Bulgaria,1993,0.22
+Bulgaria,1994,0.21
+Bulgaria,1995,0.22
+Bulgaria,1996,0.23
+Bulgaria,1997,0.21
+Bulgaria,1998,0.21
+Bulgaria,1999,0.18
+Bulgaria,2000,0.18
+Bulgaria,2001,0.19
+Bulgaria,2002,0.19
+Bulgaria,2003,0.19
+Bulgaria,2004,0.19
+Bulgaria,2005,0.17
+Bulgaria,2006,0.18
+Bulgaria,2007,0.2
+Bulgaria,2008,0.2
+Bulgaria,2009,0.19
+Bulgaria,2010,0.21
+Bulgaria,2011,0.26
+Bulgaria,2012,0.23
+Bulgaria,2013,0.2
+Bulgaria,2014,0.21
+Bulgaria,2015,0.25
+Bulgaria,2016,0.21
+Bulgaria,2017,0.24
+Bulgaria,2018,0.22
+Bulgaria,2019,0.2
+Bulgaria,2020,0.16
+Bulgaria,2021,0.2
+Bulgaria,2022,0.25
+Pakistan,1981,0.03
+Pakistan,1982,0.03
+Pakistan,1983,0.03
+Pakistan,1984,0.04
+Pakistan,1985,0.04
+Pakistan,1986,0.04
+Pakistan,1987,0.05
+Pakistan,1988,0.05
+Pakistan,1989,0.05
+Pakistan,1990,0.05
+Pakistan,1991,0.05
+Pakistan,1992,0.06
+Pakistan,1993,0.06
+Pakistan,1994,0.06
+Pakistan,1995,0.06
+Pakistan,1996,0.07
+Pakistan,1997,0.06
+Pakistan,1998,0.06
+Pakistan,1999,0.06
+Pakistan,2000,0.06
+Pakistan,2001,0.06
+Pakistan,2002,0.07
+Pakistan,2003,0.06
+Pakistan,2004,0.06
+Pakistan,2005,0.07
+Pakistan,2006,0.08
+Pakistan,2007,0.07
+Pakistan,2008,0.07
+Pakistan,2009,0.07
+Pakistan,2010,0.06
+Pakistan,2011,0.06
+Pakistan,2012,0.06
+Pakistan,2013,0.06
+Pakistan,2014,0.06
+Pakistan,2015,0.06
+Pakistan,2016,0.08
+Pakistan,2017,0.08
+Pakistan,2018,0.08
+Pakistan,2019,0.13
+Pakistan,2020,0.18
+Pakistan,2021,0.19
+Pakistan,2022,0.19
+Thailand,1981,0.02
+Thailand,1982,0.02
+Thailand,1983,0.02
+Thailand,1984,0.03
+Thailand,1985,0.06
+Thailand,1986,0.06
+Thailand,1987,0.08
+Thailand,1988,0.09
+Thailand,1989,0.11
+Thailand,1990,0.15
+Thailand,1991,0.17
+Thailand,1992,0.19
+Thailand,1993,0.19
+Thailand,1994,0.22
+Thailand,1995,0.23
+Thailand,1996,0.27
+Thailand,1997,0.29
+Thailand,1998,0.25
+Thailand,1999,0.24
+Thailand,2000,0.22
+Thailand,2001,0.24
+Thailand,2002,0.24
+Thailand,2003,0.22
+Thailand,2004,0.23
+Thailand,2005,0.25
+Thailand,2006,0.22
+Thailand,2007,0.21
+Thailand,2008,0.2
+Thailand,2009,0.2
+Thailand,2010,0.21
+Thailand,2011,0.25
+Thailand,2012,0.2
+Thailand,2013,0.2
+Thailand,2014,0.19
+Thailand,2015,0.16
+Thailand,2016,0.18
+Thailand,2017,0.17
+Thailand,2018,0.16
+Thailand,2019,0.15
+Thailand,2020,0.14
+Thailand,2021,0.15
+Thailand,2022,0.14
+Mexico,1981,0.07
+Mexico,1982,0.09
+Mexico,1983,0.11
+Mexico,1984,0.12
+Mexico,1985,0.12
+Mexico,1986,0.13
+Mexico,1987,0.15
+Mexico,1988,0.13
+Mexico,1989,0.14
+Mexico,1990,0.14
+Mexico,1991,0.13
+Mexico,1992,0.12
+Mexico,1993,0.13
+Mexico,1994,0.17
+Mexico,1995,0.17
+Mexico,1996,0.19
+Mexico,1997,0.19
+Mexico,1998,0.2
+Mexico,1999,0.2
+Mexico,2000,0.23
+Mexico,2001,0.17
+Mexico,2002,0.14
+Mexico,2003,0.18
+Mexico,2004,0.25
+Mexico,2005,0.25
+Mexico,2006,0.28
+Mexico,2007,0.31
+Mexico,2008,0.29
+Mexico,2009,0.25
+Mexico,2010,0.31
+Mexico,2011,0.39
+Mexico,2012,0.31
+Mexico,2013,0.3
+Mexico,2014,0.3
+Mexico,2015,0.29
+Mexico,2016,0.25
+Mexico,2017,0.31
+Mexico,2018,0.28
+Mexico,2019,0.23
+Mexico,2020,0.19
+Mexico,2021,0.14
+Mexico,2022,0.14
+Other CIS,1981,NA
+Other CIS,1982,NA
+Other CIS,1983,NA
+Other CIS,1984,NA
+Other CIS,1985,0.12
+Other CIS,1986,0.12
+Other CIS,1987,0.11
+Other CIS,1988,0.12
+Other CIS,1989,0.12
+Other CIS,1990,0.1
+Other CIS,1991,0.1
+Other CIS,1992,0.08
+Other CIS,1993,0.06
+Other CIS,1994,0.05
+Other CIS,1995,0.04
+Other CIS,1996,0.04
+Other CIS,1997,0.04
+Other CIS,1998,0.03
+Other CIS,1999,0.04
+Other CIS,2000,0.03
+Other CIS,2001,0.03
+Other CIS,2002,0.03
+Other CIS,2003,0.03
+Other CIS,2004,0.03
+Other CIS,2005,0.03
+Other CIS,2006,0.03
+Other CIS,2007,0.04
+Other CIS,2008,0.04
+Other CIS,2009,0.04
+Other CIS,2010,0.04
+Other CIS,2011,0.05
+Other CIS,2012,0.05
+Other CIS,2013,0.06
+Other CIS,2014,0.06
+Other CIS,2015,0.07
+Other CIS,2016,0.07
+Other CIS,2017,0.09
+Other CIS,2018,0.12
+Other CIS,2019,0.12
+Other CIS,2020,0.11
+Other CIS,2021,0.11
+Other CIS,2022,0.14
+Romania,1981,0.39
+Romania,1982,0.4
+Romania,1983,0.47
+Romania,1984,0.46
+Romania,1985,0.47
+Romania,1986,0.49
+Romania,1987,0.53
+Romania,1988,0.58
+Romania,1989,0.59
+Romania,1990,0.35
+Romania,1991,0.29
+Romania,1992,0.31
+Romania,1993,0.32
+Romania,1994,0.33
+Romania,1995,0.33
+Romania,1996,0.34
+Romania,1997,0.28
+Romania,1998,0.22
+Romania,1999,0.19
+Romania,2000,0.23
+Romania,2001,0.24
+Romania,2002,0.26
+Romania,2003,0.27
+Romania,2004,0.26
+Romania,2005,0.24
+Romania,2006,0.27
+Romania,2007,0.29
+Romania,2008,0.29
+Romania,2009,0.27
+Romania,2010,0.25
+Romania,2011,0.28
+Romania,2012,0.27
+Romania,2013,0.19
+Romania,2014,0.19
+Romania,2015,0.2
+Romania,2016,0.18
+Romania,2017,0.19
+Romania,2018,0.17
+Romania,2019,0.16
+Romania,2020,0.11
+Romania,2021,0.13
+Romania,2022,0.13
+Brazil,1981,0.12
+Brazil,1982,0.13
+Brazil,1983,0.14
+Brazil,1984,0.16
+Brazil,1985,0.16
+Brazil,1986,0.16
+Brazil,1987,0.14
+Brazil,1988,0.15
+Brazil,1989,0.14
+Brazil,1990,0.07
+Brazil,1991,0.08
+Brazil,1992,0.08
+Brazil,1993,0.08
+Brazil,1994,0.09
+Brazil,1995,0.09
+Brazil,1996,0.08
+Brazil,1997,0.09
+Brazil,1998,0.09
+Brazil,1999,0.09
+Brazil,2000,0.11
+Brazil,2001,0.1
+Brazil,2002,0.11
+Brazil,2003,0.1
+Brazil,2004,0.11
+Brazil,2005,0.12
+Brazil,2006,0.12
+Brazil,2007,0.12
+Brazil,2008,0.14
+Brazil,2009,0.13
+Brazil,2010,0.11
+Brazil,2011,0.11
+Brazil,2012,0.12
+Brazil,2013,0.15
+Brazil,2014,0.15
+Brazil,2015,0.12
+Brazil,2016,0.11
+Brazil,2017,0.09
+Brazil,2018,0.1
+Brazil,2019,0.09
+Brazil,2020,0.1
+Brazil,2021,0.12
+Brazil,2022,0.11
+Zimbabwe,1981,0.08
+Zimbabwe,1982,0.07
+Zimbabwe,1983,0.09
+Zimbabwe,1984,0.08
+Zimbabwe,1985,0.08
+Zimbabwe,1986,0.11
+Zimbabwe,1987,0.13
+Zimbabwe,1988,0.14
+Zimbabwe,1989,0.14
+Zimbabwe,1990,0.15
+Zimbabwe,1991,0.15
+Zimbabwe,1992,0.15
+Zimbabwe,1993,0.14
+Zimbabwe,1994,0.15
+Zimbabwe,1995,0.15
+Zimbabwe,1996,0.14
+Zimbabwe,1997,0.14
+Zimbabwe,1998,0.15
+Zimbabwe,1999,0.13
+Zimbabwe,2000,0.12
+Zimbabwe,2001,0.12
+Zimbabwe,2002,0.11
+Zimbabwe,2003,0.08
+Zimbabwe,2004,0.1
+Zimbabwe,2005,0.09
+Zimbabwe,2006,0.06
+Zimbabwe,2007,0.06
+Zimbabwe,2008,0.04
+Zimbabwe,2009,0.05
+Zimbabwe,2010,0.07
+Zimbabwe,2011,0.07
+Zimbabwe,2012,0.04
+Zimbabwe,2013,0.08
+Zimbabwe,2014,0.16
+Zimbabwe,2015,0.12
+Zimbabwe,2016,0.07
+Zimbabwe,2017,0.08
+Zimbabwe,2018,0.09
+Zimbabwe,2019,0.07
+Zimbabwe,2020,0.07
+Zimbabwe,2021,0.09
+Zimbabwe,2022,0.11
+Greece,1981,0.15
+Greece,1982,0.15
+Greece,1983,0.17
+Greece,1984,0.18
+Greece,1985,0.2
+Greece,1986,0.21
+Greece,1987,0.25
+Greece,1988,0.26
+Greece,1989,0.3
+Greece,1990,0.3
+Greece,1991,0.29
+Greece,1992,0.29
+Greece,1993,0.3
+Greece,1994,0.31
+Greece,1995,0.31
+Greece,1996,0.3
+Greece,1997,0.32
+Greece,1998,0.34
+Greece,1999,0.34
+Greece,2000,0.34
+Greece,2001,0.35
+Greece,2002,0.36
+Greece,2003,0.34
+Greece,2004,0.36
+Greece,2005,0.36
+Greece,2006,0.34
+Greece,2007,0.35
+Greece,2008,0.34
+Greece,2009,0.34
+Greece,2010,0.31
+Greece,2011,0.31
+Greece,2012,0.34
+Greece,2013,0.28
+Greece,2014,0.27
+Greece,2015,0.24
+Greece,2016,0.17
+Greece,2017,0.19
+Greece,2018,0.18
+Greece,2019,0.13
+Greece,2020,0.07
+Greece,2021,0.06
+Greece,2022,0.07
+New Zealand,1981,0.05
+New Zealand,1982,0.05
+New Zealand,1983,0.06
+New Zealand,1984,0.06
+New Zealand,1985,0.06
+New Zealand,1986,0.06
+New Zealand,1987,0.05
+New Zealand,1988,0.06
+New Zealand,1989,0.07
+New Zealand,1990,0.06
+New Zealand,1991,0.07
+New Zealand,1992,0.07
+New Zealand,1993,0.08
+New Zealand,1994,0.08
+New Zealand,1995,0.1
+New Zealand,1996,0.1
+New Zealand,1997,0.09
+New Zealand,1998,0.08
+New Zealand,1999,0.09
+New Zealand,2000,0.09
+New Zealand,2001,0.1
+New Zealand,2002,0.12
+New Zealand,2003,0.14
+New Zealand,2004,0.14
+New Zealand,2005,0.14
+New Zealand,2006,0.15
+New Zealand,2007,0.12
+New Zealand,2008,0.13
+New Zealand,2009,0.12
+New Zealand,2010,0.14
+New Zealand,2011,0.13
+New Zealand,2012,0.13
+New Zealand,2013,0.12
+New Zealand,2014,0.1
+New Zealand,2015,0.09
+New Zealand,2016,0.07
+New Zealand,2017,0.07
+New Zealand,2018,0.08
+New Zealand,2019,0.07
+New Zealand,2020,0.07
+New Zealand,2021,0.07
+New Zealand,2022,0.07
+Uzbekistan,1981,NA
+Uzbekistan,1982,NA
+Uzbekistan,1983,NA
+Uzbekistan,1984,NA
+Uzbekistan,1985,0.06
+Uzbekistan,1986,0.07
+Uzbekistan,1987,0.06
+Uzbekistan,1988,0.06
+Uzbekistan,1989,0.07
+Uzbekistan,1990,0.08
+Uzbekistan,1991,0.07
+Uzbekistan,1992,0.06
+Uzbekistan,1993,0.04
+Uzbekistan,1994,0.05
+Uzbekistan,1995,0.04
+Uzbekistan,1996,0.03
+Uzbekistan,1997,0.03
+Uzbekistan,1998,0.03
+Uzbekistan,1999,0.03
+Uzbekistan,2000,0.03
+Uzbekistan,2001,0.03
+Uzbekistan,2002,0.03
+Uzbekistan,2003,0.02
+Uzbekistan,2004,0.03
+Uzbekistan,2005,0.04
+Uzbekistan,2006,0.04
+Uzbekistan,2007,0.04
+Uzbekistan,2008,0.04
+Uzbekistan,2009,0.04
+Uzbekistan,2010,0.04
+Uzbekistan,2011,0.05
+Uzbekistan,2012,0.04
+Uzbekistan,2013,0.05
+Uzbekistan,2014,0.05
+Uzbekistan,2015,0.04
+Uzbekistan,2016,0.05
+Uzbekistan,2017,0.05
+Uzbekistan,2018,0.05
+Uzbekistan,2019,0.05
+Uzbekistan,2020,0.05
+Uzbekistan,2021,0.06
+Uzbekistan,2022,0.06
+Hungary,1981,0.3
+Hungary,1982,0.3
+Hungary,1983,0.29
+Hungary,1984,0.28
+Hungary,1985,0.27
+Hungary,1986,0.26
+Hungary,1987,0.26
+Hungary,1988,0.24
+Hungary,1989,0.23
+Hungary,1990,0.21
+Hungary,1991,0.2
+Hungary,1992,0.18
+Hungary,1993,0.16
+Hungary,1994,0.15
+Hungary,1995,0.15
+Hungary,1996,0.16
+Hungary,1997,0.17
+Hungary,1998,0.15
+Hungary,1999,0.14
+Hungary,2000,0.14
+Hungary,2001,0.13
+Hungary,2002,0.12
+Hungary,2003,0.13
+Hungary,2004,0.1
+Hungary,2005,0.07
+Hungary,2006,0.07
+Hungary,2007,0.07
+Hungary,2008,0.07
+Hungary,2009,0.07
+Hungary,2010,0.07
+Hungary,2011,0.07
+Hungary,2012,0.07
+Hungary,2013,0.07
+Hungary,2014,0.07
+Hungary,2015,0.06
+Hungary,2016,0.06
+Hungary,2017,0.05
+Hungary,2018,0.05
+Hungary,2019,0.04
+Hungary,2020,0.04
+Hungary,2021,0.03
+Hungary,2022,0.03
+United Kingdom,1981,3.27
+United Kingdom,1982,3.18
+United Kingdom,1983,3.04
+United Kingdom,1984,1.29
+United Kingdom,1985,2.37
+United Kingdom,1986,2.75
+United Kingdom,1987,2.65
+United Kingdom,1988,2.65
+United Kingdom,1989,2.55
+United Kingdom,1990,2.36
+United Kingdom,1991,2.41
+United Kingdom,1992,2.16
+United Kingdom,1993,1.74
+United Kingdom,1994,1.24
+United Kingdom,1995,1.37
+United Kingdom,1996,1.3
+United Kingdom,1997,1.27
+United Kingdom,1998,1.08
+United Kingdom,1999,0.97
+United Kingdom,2000,0.82
+United Kingdom,2001,0.84
+United Kingdom,2002,0.79
+United Kingdom,2003,0.74
+United Kingdom,2004,0.62
+United Kingdom,2005,0.51
+United Kingdom,2006,0.45
+United Kingdom,2007,0.43
+United Kingdom,2008,0.45
+United Kingdom,2009,0.44
+United Kingdom,2010,0.45
+United Kingdom,2011,0.46
+United Kingdom,2012,0.42
+United Kingdom,2013,0.32
+United Kingdom,2014,0.29
+United Kingdom,2015,0.21
+United Kingdom,2016,0.11
+United Kingdom,2017,0.08
+United Kingdom,2018,0.08
+United Kingdom,2019,0.07
+United Kingdom,2020,0.05
+United Kingdom,2021,0.03
+United Kingdom,2022,0.02
+Japan,1981,0.41
+Japan,1982,0.41
+Japan,1983,0.4
+Japan,1984,0.39
+Japan,1985,0.38
+Japan,1986,0.38
+Japan,1987,0.31
+Japan,1988,0.26
+Japan,1989,0.24
+Japan,1990,0.19
+Japan,1991,0.19
+Japan,1992,0.18
+Japan,1993,0.17
+Japan,1994,0.16
+Japan,1995,0.15
+Japan,1996,0.15
+Japan,1997,0.1
+Japan,1998,0.09
+Japan,1999,0.09
+Japan,2000,0.07
+Japan,2001,0.07
+Japan,2002,0.03
+Japan,2003,0.03
+Japan,2004,0.03
+Japan,2005,0.02
+Japan,2006,0.03
+Japan,2007,0.03
+Japan,2008,0.03
+Japan,2009,0.03
+Japan,2010,0.02
+Japan,2011,0.03
+Japan,2012,0.03
+Japan,2013,0.03
+Japan,2014,0.03
+Japan,2015,0.03
+Japan,2016,0.03
+Japan,2017,0.03
+Japan,2018,0.02
+Japan,2019,0.02
+Japan,2020,0.02
+Japan,2021,0.02
+Japan,2022,0.02
+South Korea,1981,0.37
+South Korea,1982,0.37
+South Korea,1983,0.37
+South Korea,1984,0.39
+South Korea,1985,0.42
+South Korea,1986,0.45
+South Korea,1987,0.45
+South Korea,1988,0.45
+South Korea,1989,0.38
+South Korea,1990,0.32
+South Korea,1991,0.28
+South Korea,1992,0.23
+South Korea,1993,0.18
+South Korea,1994,0.14
+South Korea,1995,0.11
+South Korea,1996,0.09
+South Korea,1997,0.09
+South Korea,1998,0.08
+South Korea,1999,0.08
+South Korea,2000,0.08
+South Korea,2001,0.07
+South Korea,2002,0.06
+South Korea,2003,0.06
+South Korea,2004,0.06
+South Korea,2005,0.05
+South Korea,2006,0.05
+South Korea,2007,0.06
+South Korea,2008,0.05
+South Korea,2009,0.05
+South Korea,2010,0.04
+South Korea,2011,0.04
+South Korea,2012,0.04
+South Korea,2013,0.03
+South Korea,2014,0.03
+South Korea,2015,0.03
+South Korea,2016,0.03
+South Korea,2017,0.03
+South Korea,2018,0.02
+South Korea,2019,0.02
+South Korea,2020,0.02
+South Korea,2021,0.02
+South Korea,2022,0.02
