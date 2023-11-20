@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Load libraries and fonts
 
-```{r load libraries and fonts, warning = FALSE, message = FALSE}
+```{r load libraries and fonts, warning = FALSE, message = FALSE, include = FALSE}
 library(tidyverse)
 library(readxl)
 library(vroom)
@@ -58,7 +58,12 @@ scfi_index <- read_excel(here::here("data", "Shanghai Containerized Freight Inde
 containers_EBIT <- read_excel(here::here("data", "Statista_avg_Ebit_margin_containers.xlsx"))
 container_routes <- read_excel(here::here("data", "TradeRoutes.xlsx"))
 container_wait_times <- read_csv(here::here("data", "Container_wait_times.csv"))
+baltic_dirty_tanker <- read_csv(here::here("data", "Baltic Dirty Tanker Historical Data.csv"))
 major_ports <- read_csv(here::here("data", "major_container_ports.csv"))
+oil_trade <- read_csv(here::here("data","Global Crude Petroleum Trade 1995-2021.csv")) %>% 
+  janitor::clean_names()
+baltic_dry_index <- read_csv(here::here("data", "Baltic Dry Index Historical Data.csv"))
+
 
 #Clean the datasets: use janitor::clean_names() and manually make some changes
 container_throughput <- container_throughput %>% 
@@ -74,9 +79,23 @@ containers_EBIT <- containers_EBIT %>%
 container_wait_times <- container_wait_times %>% 
   janitor::clean_names()
 
-# load oil trade data
-oil_trade <- read_csv(here::here("data","Global Crude Petroleum Trade 1995-2021.csv")) %>% 
-  janitor::clean_names()
+#Some data wrangling needed on the bulker and tanker index & obtaining the monthly average
+baltic_dirty_tanker <- baltic_dirty_tanker %>% 
+  janitor::clean_names() %>% 
+  mutate(month = substr(date, 4, 5), 
+         year = substr(date, 7, 11), 
+         month_year = ym(paste0(year, month, sep = "-"))) %>% 
+  group_by(month_year) %>% 
+  summarise(avg_price = mean(price))
+
+baltic_dry_index <- baltic_dry_index %>% 
+  janitor::clean_names() %>% 
+  mutate(month = substr(date, 4, 5), 
+         year = substr(date, 7, 11), 
+         month_year = ym(paste0(year, month, sep = "-"))) %>% 
+  group_by(month_year) %>% 
+  summarise(avg_price = mean(price))
+
 
 #Here we pivot_longer to make it easier to plot and do calculations
 container_tradeflows <- container_tradeflows %>% 
@@ -396,8 +415,6 @@ In this plot, we will create a visualization of how the yearly global container 
 
 
 ```{r container port throughput, warning = FALSE, message = FALSE, fig.width=40, fig.height=20}
-#Set options to avoid scientific notation of high numbers
-options("scipen")
 
 #Set our colour palette
 my_colours <- c("#fd7f6f", "#7eb0d5","#8cc24e", "#ffb55a", "#bd7ebe", "#011f5f")
@@ -673,8 +690,8 @@ scfi <- scfi_index %>%
   #Add title, subtitle, axis labels and source
   labs(title = "The supply chain issues following Covid-19 significantly increased the price of container freight", 
        subtitle = "Shanghai Containerized Freight Index, 2014-2023", 
-       x = "Date", 
-       y = "Price", 
+       x = "Year", 
+       y = "Price ($)", 
        caption = "Source: Bloomberg") + 
   
   #Left-align title
@@ -684,6 +701,9 @@ scfi <- scfi_index %>%
   theme(plot.title = element_text(size = 52, family = "Roboto"), 
         plot.subtitle = element_text(size = 46, color = "grey50", family = "Roboto"), 
         plot.caption = element_text(size = 32, family = "Roboto")) + 
+  
+  #Add commas for y-axis labels
+  scale_y_continuous(labels = scales::comma) + 
   
   #Add curve for annotation 1, that highlights the start of the price surge during Covid-19
   geom_curve(
@@ -768,7 +788,7 @@ EBIT_containers <- containers_EBIT %>%
   #Add title, subtitle, axis labels and source
   labs(title = "Significantly favouring the large container shipping companies", 
        subtitle = "Average EBIT margins for top container shipping companies, 2014-2023", 
-       x = "Date", 
+       x = "Year", 
        y = "Average EBIT margin", 
        caption = "Source: Statista") + 
   
@@ -798,13 +818,13 @@ EBIT_containers <- containers_EBIT %>%
 #Display the plot
 EBIT_containers
 
-
 ```
 
 # Plot 6 Dry Bulk Price: Baltic Dry Index
 
-```{r, BDI index, warning = FALSE, message = FALSE, fig.width=40, fig.height=20}
+Now, we want to investigate if the bulkers market experienced the same trend of increasing prices. We will do this by examining the Baltic Dry Index, which is one of the main indices covering the spot prices of shipping of dry bulk goods. 
 
+```{r, BDI index, warning = FALSE, message = FALSE, fig.width=40, fig.height=20}
 
 #Set annotations we will add to the plot
 annotation = "March 11, 2020: WHO declares \n that the Covid-19 outbreak \n is a global pandemic"
@@ -812,7 +832,7 @@ annotation = "March 11, 2020: WHO declares \n that the Covid-19 outbreak \n is a
 balt_dry <- baltic_dry_index %>% 
   
   #Create the line plot of the development of the index
-  ggplot(aes(x = month_year, y = price)) + 
+  ggplot(aes(x = month_year, y = avg_price)) + 
   geom_line(color = "#011f5f", size = 2) +
   
   #Remove background and border of the plot
@@ -823,10 +843,10 @@ balt_dry <- baltic_dry_index %>%
         panel.grid.minor.x = element_blank()) + 
   
   #Add title, subtitle, axis labels and source
-  labs(title = "...A Similar Pattern Can Be Seen In The Dry Bulk Shipping Industry", 
+  labs(title = "A Similar Pattern Can Be Seen In The Dry Bulk Shipping Industry", 
        subtitle = "Baltic Dry Index, 2014-2023", 
-       x = "Date", 
-       y = "Price", 
+       x = "Year", 
+       y = "Price ($)", 
        caption = "Source: Bloomberg") + 
   
   #Left-align title
@@ -837,6 +857,8 @@ balt_dry <- baltic_dry_index %>%
         plot.subtitle = element_text(size = 46, color = "grey50", family = "Roboto"), 
         plot.caption = element_text(size = 32, family = "Roboto")) +
   
+  #Add commas to y-axis labels
+  scale_y_continuous(labels = scales::comma) + 
   
   
   #Add curve for annotation 1, that highlights the start of the price surge during Covid-19
@@ -844,7 +866,7 @@ balt_dry <- baltic_dry_index %>%
     data = data.frame(x = ymd("2020-03-01"), y = 3000, xend = ymd("2020-02-01"), yend = 920),
     mapping = aes(x = x, y = y, xend = xend, yend = yend), 
     colour = "grey15" , 
-    size = 2,
+    size = 1,
     curvature = -0.25,
     inherit.aes = FALSE,
     arrow = arrow(length = unit(2, "mm"), type = "closed")
@@ -856,7 +878,7 @@ balt_dry <- baltic_dry_index %>%
     aes(x = x, y = y, label = label),
     colour="grey15",
     hjust = 0.5,
-    lineheight = 0.4,
+    lineheight = 0.8,
     inherit.aes = FALSE,
     size = 14
   )  +
@@ -872,7 +894,6 @@ balt_dry <- baltic_dry_index %>%
 #Display the plot
 balt_dry
 
-ggsave(here::here("images", "Baltic_dry_index.jpg"), balt_dry, width = 20, height = 10, units = "in")
 ```
 
 # Plot 7: Baltic Dirty Tanker Index
@@ -880,9 +901,9 @@ ggsave(here::here("images", "Baltic_dry_index.jpg"), balt_dry, width = 20, heigh
 In this plot, we will examine how the Covid-19 pandemic impacted the prices of oil tanker shipping. Did it experience the same effect as the containers and bulkers? Given that the demand for fuel likely decreased, this might not be the case.
 
 
-```{r baltic dirty tanker, warning = FALSE, message = FALSE, fig.width = 20, fig.height = 10}
+```{r baltic dirty tanker, warning = FALSE, message = FALSE, fig.width = 40, fig.height = 20}
 
-label <- "Covid-19 pandemic, 2020-2022"
+label <- "Covid-19 pandemic \n 2020-2022"
 
 dirty_tanker_index <- baltic_dirty_tanker %>% 
   ggplot(aes(x = month_year, y = avg_price)) + 
@@ -908,7 +929,7 @@ dirty_tanker_index <- baltic_dirty_tanker %>%
   #Add title, subtitle, axis labels and source
   labs(title = "The Tanker Market Experienced the Opposite Effect, with Prices Reaching All-Time Lows", 
        subtitle = "Baltic Dirty Tanker Index, 2014-2023", 
-       x = "Date", 
+       x = "Year", 
        y = "Price ($)", 
        caption = "Source: Bloomberg") +
   
@@ -936,16 +957,16 @@ dirty_tanker_index <- baltic_dirty_tanker %>%
     label.padding = unit(1, "lines")
   ) 
 
+#Display the plot
 dirty_tanker_index
-
-ggsave(here::here("images", "baltic_dirty_tanker.jpg"), width = 20, height = 10, units = "in")
 
 ```
 
 # Plot 8: Covid-19 impact on global crude oil import
 
-```{r global crude import, message = FALSE， warning= FALSE, fig.width = 20, fig.height = 10}
-options("scipen")
+Finally, our hypothesis is that the tanker market didn't experience the same price surge as the bulker and container market because the supply-demand wasn't as constrained, since the demand for fuel decreased during the pandemic. We will examine if this could be the case by visualising how the total global import changed during the pandemic. 
+
+```{r global_crude_import, warning = FALSE, message = FALSE, fig.width = 40, fig.height = 20}
 
 #Select import trade data after 2017 and calculate the total import value by year
 oil_covid_trade_import <- oil_trade %>% 
@@ -994,7 +1015,7 @@ covid_import <- ggplot(oil_covid_trade_import, aes(x = as.factor(year), y = trad
         axis.title = element_text(size = 40, face = "bold")) + 
   
   #Adjust Y axis
-  scale_y_continuous(labels = scales::comma) + 
+  scale_y_continuous(labels = scales::comma, limits = c(0, 1300000000000), breaks = seq(0,1200000000000, by =  200000000000)) + 
   
   #Some code for creating manual gridlines, we do this to make the gridlines shorter for aesthetic purposes
   geom_segment(
@@ -1031,9 +1052,7 @@ covid_import <- ggplot(oil_covid_trade_import, aes(x = as.factor(year), y = trad
     label.padding = unit(0.5, "lines")
   )
   
-  
+#Display the plot
 covid_import
 
-# Save the combined plot
-ggsave(here::here("images", "Covid-19 impact on global oil import.jpg"), covid_import, width = 20, height = 10, units = "in")
 ```
