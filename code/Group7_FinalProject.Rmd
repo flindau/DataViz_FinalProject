@@ -74,6 +74,10 @@ containers_EBIT <- containers_EBIT %>%
 container_wait_times <- container_wait_times %>% 
   janitor::clean_names()
 
+# load oil trade data
+oil_trade <- read_csv(here::here("data","Global Crude Petroleum Trade 1995-2021.csv")) %>% 
+  janitor::clean_names()
+
 #Here we pivot_longer to make it easier to plot and do calculations
 container_tradeflows <- container_tradeflows %>% 
   pivot_longer(cols = 8:20, 
@@ -797,4 +801,97 @@ EBIT_containers
 
 ```
 
+# Plot 7: Covid-19 impact on global crude oil import
+```{r global crude import, message = FALSE， warning= FALSE, fig.width = 20, fig.height = 10}
+options("scipen")
 
+#Select import trade data after 2017 and calculate the total import value by year
+oil_covid_trade_import <- oil_trade %>% 
+  filter(year >= 2017) %>% 
+  filter(action == "Import") %>% 
+  group_by(year) %>% 
+  summarise(trade_value = sum(trade_value))
+
+#Select total import value in 2019
+import2019 <- oil_covid_trade_import %>% 
+  filter(year == 2019) %>% 
+  pull()
+
+#Select total import value in 2020
+import2020 <- oil_covid_trade_import %>% 
+  filter(year == 2020) %>% 
+  pull()
+
+# Calculate the percentage change from 2019 to 2020
+label <- 100*round(import2020/import2019 - 1,2)
+
+# Create a bar chart over the total import value in each year around COVID
+covid_import <- ggplot(oil_covid_trade_import, aes(x = as.factor(year), y = trade_value)) +
+  geom_bar(stat = "identity", fill = "#011F5F") +
+  
+  #Add title, subtitle, axis labels and source
+  labs(title = "Decreasing Tanker Prices are Likely Due to a Significant Drop in Oil Demand",
+       subtitle = "Total Global Crude Petroleum Import Value, 2017-2021", x = "Year", y = "Import value ($)") +
+  theme_minimal() + 
+  theme(legend.position = "None") +
+  
+  #Remove vertical gridlines and minor horizontal
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank()) +
+  
+  #Change title position to the left
+  theme(plot.title.position = "plot")+
+  
+  #Set title, subtitle and caption size, font and colors
+  theme(plot.title = element_text(size = 52, family = "Roboto"), 
+        plot.subtitle = element_text(size = 46, color = "grey50", family = "Roboto"), 
+        plot.caption = element_text(size = 32, family = "Roboto")) +
+  
+  #Increase the size of the axis labels
+  theme(axis.text = element_text(size = 40),
+        axis.title = element_text(size = 40, face = "bold")) + 
+  
+  #Adjust Y axis
+  scale_y_continuous(labels = scales::comma) + 
+  
+  #Some code for creating manual gridlines, we do this to make the gridlines shorter for aesthetic purposes
+  geom_segment(
+    data = data.frame(x = 3, y = 1050000000000, xend = 3, yend = 1150000000000),
+    mapping = aes(x = x, y = y, xend = xend, yend= yend),
+    color = "grey15",
+    size = 2,
+    inherit.aes=FALSE
+  ) +
+  geom_segment(
+    data = data.frame(x = 3, y = 1150000000000, xend = 4, yend = 1150000000000),
+    mapping = aes(x = x, y = y, xend = xend, yend= yend),
+    color = "grey15",
+    size = 2,
+    inherit.aes=FALSE
+  )+
+  geom_segment(
+    data = data.frame(x = 4, y = 1150000000000, xend = 4, yend = 700000000000),
+    mapping = aes(x = x, y = y, xend = xend, yend= yend),
+    color = "grey15",
+    size = 2,
+    inherit.aes=FALSE,
+    arrow = arrow(length = unit(4,"mm"), type = "closed")
+  ) +
+  geom_label(
+    data = data.frame(x = 4, y = 900000000000, label = paste0(label, "%")),
+    aes(x = x, y = y, label = label),
+    color = "grey15",
+    family = "Roboto",
+    hjust = 0.5,
+    lineheight = .8,
+    inherit.aes = FALSE,
+    size = 16,
+    label.padding = unit(0.5, "lines")
+  )
+  
+  
+covid_import
+
+# Save the combined plot
+ggsave(here::here("images", "Covid-19 impact on global oil import.jpg"), covid_import, width = 20, height = 10, units = "in")
+```
