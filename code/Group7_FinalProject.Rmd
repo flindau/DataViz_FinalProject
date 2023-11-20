@@ -1,0 +1,800 @@
+---
+title: "Data Visualisation Final Project"
+author: "Group 7"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    highlight: zenburn
+    number_sections: false
+    toc: yes
+    toc_float: yes
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load libraries and fonts
+
+```{r load libraries and fonts, warning = FALSE, message = FALSE}
+library(tidyverse)
+library(readxl)
+library(vroom)
+library(ggtext)
+library(ggrepel)
+library(patchwork)
+library(gghighlight)
+library(skimr)
+library(showtext)
+library(wbstats)
+library(ggforce)
+library(directlabels)
+library(plotly)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(sf)
+
+font_add_google("Lato")
+font_add_google("Roboto")
+showtext_auto()
+
+```
+
+# Introduction
+
+In this project, we will analyze how Covid-19 disrupted the global shipping industry and what implications the Covid-19 impact had on the industry and the world as a whole. To do this, we have collected multiple datasets on container trading, dry bulk trading (coal, grain) as well as on tanker trading (e.g., oil, gas), and we have used them to explore different hypothesis and then explore the opportunity to create a story around the impact that Covid had on the global shipping industry, and its implications. The datasets mainly come from [UNCTAD's data center](https://unctadstat.unctad.org/datacentre/), but also from sources such as Bloomberg, Statista, and Clarkson Research. We started our project by going through UNCTAD's yearly reviews of maritime transport, which served as a great foundation to understand what kind of data we can retrieve, what visualisations that could make sense and what story could be created. Furthermore, we have created our own datasets with major ports based on coordinates from Google Maps and one dataset with illustrative trade routes to create the map, also based on coordinates retrieved from Google Maps. 
+
+This document will begin with loading the data, and then start creating visualizations for our project. 
+
+# Load & Clean data
+
+```{r load and clean data, warning = FALSE, message = FALSE}
+
+container_throughput <- read_csv(here::here("data","Container_port_throughput.csv"))
+container_tradeflows <- read_excel(here::here("data", "Container_trade_flows.xlsx"))
+scfi_index <- read_excel(here::here("data", "Shanghai Containerized Freight Index.xlsx"))
+containers_EBIT <- read_excel(here::here("data", "Statista_avg_Ebit_margin_containers.xlsx"))
+container_routes <- read_excel(here::here("data", "TradeRoutes.xlsx"))
+container_wait_times <- read_csv(here::here("data", "Container_wait_times.csv"))
+major_ports <- read_csv(here::here("data", "major_container_ports.csv"))
+
+#Clean the datasets: use janitor::clean_names() and manually make some changes
+container_throughput <- container_throughput %>% 
+  janitor:: clean_names() %>% 
+  rename(TEU = teu_twenty_foot_equivalent_unit)
+
+scfi_index <- scfi_index %>% 
+  janitor:: clean_names()
+
+containers_EBIT <- containers_EBIT %>% 
+  janitor:: clean_names()
+
+container_wait_times <- container_wait_times %>% 
+  janitor::clean_names()
+
+#Here we pivot_longer to make it easier to plot and do calculations
+container_tradeflows <- container_tradeflows %>% 
+  pivot_longer(cols = 8:20, 
+               names_to = "year", 
+               values_to = "TEU") %>%
+  janitor:: clean_names()
+```
+
+# Plot 1: Map of Major Trade Routes for Container Shipping
+
+In this plot, we will create an illustrative plot of the top 5 trade routes where most of the worlds inter-continental trading occur. To simplify the visualisation, we have only used one port to represent a whole continent, while in reality this is not entirely true, the simplification will convey the same message while keeping the details of the map interpretable. The choice of ports to represent the continent has been done by choosing the largest port in terms of container ships throughput. The choices are presented below:
+
+* Asia: Shanghai
+* Europe: Rotterdam
+* Australasia & Oceania: Melbourne
+* Sub-Saharan Africa: Dunbar
+* Indian Sub Continent & Middle East: Mundra
+* North America: Los Angeles and New York
+* South America: Santos
+
+We will need some initial data wrangling to be able to make the map, to join the trade magnitude dataset with coordinates and illustrative trade routes. 
+
+```{r trade routes map, warning=FALSE, message=FALSE, fig.width=40, fig.height=20}
+
+#Set colors 
+my_colours <- c("#fd7f6f", "#7eb0d5", "#011f5f","#8cc24e", "#ffb55a")
+
+#Join the tradeflows dataset with our dataset of major ports
+container_tradeflows_ports <- container_tradeflows %>%
+  
+  #first we'll get the port of the origin
+  left_join(major_ports, by = c("origin" = "region")) %>% 
+  rename(origin_port = port, 
+         origin_lat = lat, 
+         origin_lng = lng) %>% 
+  
+  #Then we'll get the port for the destination
+  left_join(major_ports, by = c("destination" = "region")) %>% 
+  rename(dest_port = port, 
+         dest_lat = lat, 
+         dest_lng = lng) %>% 
+  
+  #We want to remove intra-continental trade routes for this plot
+  mutate(dest_lat = ifelse(origin_lat == dest_lat, NA, dest_lat), 
+         dest_lng = ifelse(origin_lng == dest_lng, NA, dest_lng)) %>% 
+  
+  #Filter for NAs and only choose the year of 2022
+  filter(!is.na(origin), 
+         year == 2022)
+
+
+#Now, we will create a name for each trade route, that goes both ways. That is, Asia to Europe will have the same name as Europe to Asia
+container_tradeflows_routes <- container_tradeflows_ports %>% 
+  filter(origin != destination) %>% 
+  
+  #This is a messy code but essentially it gives this two-way name for each trade route
+  mutate(origin_dest = ifelse(origin == "Asia", paste(origin, destination, sep = "-"), 
+                        ifelse(origin == "Australasia & Oceania" & destination != "Asia", paste(origin, destination, sep = "-"), 
+                        ifelse(origin == "Europe" & !destination %in% c("Asia", "Australasia & Oceania"),  paste(origin, destination, sep = "-"), 
+                        ifelse(origin == "Indian Sub Cont. & Middle East" & !destination %in% c("Asia", "Australasia & Oceania", "Europe"),  paste(origin, destination, sep = "-"), 
+                        ifelse(origin == "North America" & !destination %in% c("Asia", "Australasia & Oceania", "Europe", "Indian Sub Cont. & Middle East"),  paste(origin, destination, sep = "-"), 
+                        ifelse(origin == "South & Central America" & !destination %in% c("Asia", "Australasia & Oceania", "Europe", "Indian Sub Cont. & Middle East", "North America"), paste(origin, destination, sep = "-"), paste(destination, origin, sep = "-"))))))))
+
+#Now, we'll add the coordinates for the trade routes to this dataset
+
+container_tradeflows_routes <- container_tradeflows_routes %>% 
+  #Group by two-way name and calculate the total TEU traded on that route
+  group_by(origin_dest) %>% 
+  mutate(total_teu = sum(teu)) %>% 
+  ungroup() %>% 
+  #Join it with our trade route coordinates dataset
+  left_join(container_routes, by = "origin_dest") %>% 
+  
+  #Remove unnecessary variables and rename variables
+  select(-origin_lat.x, -origin_lng.x, -dest_lat.x, -dest_lng.x) %>% 
+  rename(origin_lat = origin_lat.y, origin_lng = origin_lng.y, 
+         dest_lat = dest_lat.y, dest_lng = dest_lng.y) %>% 
+  select(-year, -origin_port, -dest_port, -Origin, -Destination) %>% 
+  
+  #Since we now will have duplicate entries, we will only keep the distinct ones
+  distinct(origin_dest, .keep_all = TRUE)
+
+#In our graph, we will only show the top 5 routes, so we will extract these from our tibble
+
+
+container_routes_for_graph <- container_tradeflows_routes %>% 
+  slice_max(order_by = total_teu, n = 5) %>% 
+  
+  #Now, we will have some overlap of lines, which we don't want, hence we will move Asia-Europe line down 5 degrees
+  mutate(origin_lat = ifelse(origin_dest == "Asia-Europe", origin_lat - 5, origin_lat),
+    stop1_lat = ifelse(origin_dest == "Asia-Europe", stop1_lat - 5, stop1_lat), 
+         stop2_lat = ifelse(origin_dest == "Asia-Europe", stop2_lat - 5, stop2_lat), 
+         stop3_lat = ifelse(origin_dest == "Asia-Europe", stop3_lat - 5, stop3_lat))
+
+#Calculate how much of the global inter-continental trade, the top 5 routes account for
+#This calculates the TEU of top 5 routes
+top5_routes_TEU <- container_routes_for_graph %>% 
+   summarise(TEU = sum(total_teu)) %>% 
+   pull()
+
+#This calculate the total inter-continental TEU
+allroutes_TEU <- container_tradeflows_routes %>% 
+  summarise(TEU = sum(total_teu)) %>% 
+  pull()
+
+top5_perc_of_global <- 100*round(top5_routes_TEU / allroutes_TEU, 2)
+
+#Finally, let's create the map
+
+#Start by creating the world
+world <- ne_countries(scale = "medium", returnclass = "sf") %>% 
+  filter(name != "Antarctica")
+
+#And now we create the map
+container_map <- ggplot(data = world) + 
+  geom_sf(
+    mapping = aes(
+    geometry = geometry
+    ),
+    colour = "white", 
+    show.legend = FALSE 
+    ) + 
+  
+  #Remove coordinates
+  coord_sf(datum = NA) + 
+  
+  #Add points for all ports that will be included in the port
+  geom_point(data = container_tradeflows_ports, 
+             aes(x = origin_lng, y = origin_lat), 
+             size = 2, 
+             color = "tomato") + 
+  theme_void() + 
+  
+  #Set the colors of the plot to our pre-defined color palette
+  scale_color_manual(values = my_colours) + 
+  
+  #Now, we will add curves in the map for each trade route. Since trade routes have to go through water, we have to make them in steps to   avoid having them go over land
+  
+  #First curve is from the origin to our defined "stop1", which can be thought of as the "first" turn
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = origin_lng, y = origin_lat, xend = stop1_lng, yend = stop1_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 2,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both"), 
+    position = position_dodge2(.5)
+  ) + 
+  
+  #Second curve is from the first turn to the second
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop1_lng, y = stop1_lat, xend = stop2_lng, yend = stop2_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 2,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  
+  #Third curve is from the second turn to the third
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop2_lng, y = stop2_lat, xend = stop3_lng, yend = stop3_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 2,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  
+  #Fourth curve is from the third turn to the fourth
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop3_lng, y = stop3_lat, xend = stop4_lng, yend = stop4_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 2,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  
+  #Fifth curve is from the fourth turn to the fifth
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop4_lng, y = stop4_lat, xend = stop5_lng, yend = stop5_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 2,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  
+  #Sixth curve is from the fifth turn to the sixth
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop5_lng, y = stop5_lat, xend = stop6_lng, yend = stop6_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 2,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  
+  #Seventh curve is from the sixth turn to the Seventh
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop6_lng, y = stop6_lat, xend = stop7_lng, yend = stop7_lat, color = factor(origin_dest)), 
+    curvature = 0, 
+    size = 2,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  
+  #Eigth curve is from the seventh turn to the last
+  geom_curve(
+    data = container_routes_for_graph, 
+    aes(x = stop7_lng, y = stop7_lat, xend = stop8_lng, yend = stop8_lat, color = factor(origin_dest)), 
+    curvature = 0,
+    size = 2,
+    arrow = arrow(length = unit(3, "pt"), type = "closed", ends = "both")
+  ) + 
+  
+  #Since Asia and North America would trade over the pacific, we have to add manual trade routes to avoid having a line all across the map
+  #This line will start in the very west part of the map and then go to the port of LA
+  geom_curve(
+    data = data.frame(x = -180.25 , y = 33.24, xend = -118.26, yend = 33.74), 
+    aes(x = x, y = y, xend = xend, yend = yend),
+    color = "#011f5f", 
+    curvature = 0,
+    size = 2,
+    arrow = arrow(length = unit(3, "pt"), type = "closed"),
+    ends = "both") + 
+  
+  #Remove legend
+  theme(legend.position = "null")  + 
+  
+  #Set font to Roboto
+  theme(text = element_text(family = "Roboto")) + 
+  
+  #Set title, subtitle and caption size, font and colors
+  theme(plot.title = element_text(size = 52, family = "Roboto"), 
+        plot.subtitle = element_text(size = 44, color = "grey50", family = "Roboto"), 
+        plot.caption = element_text(size = 32, family = "Roboto")) + 
+  
+  #Add title and subtitle to plot
+  labs(title = paste0("Top 5 major trade routes account for ", top5_perc_of_global, "% of global container trade"), 
+                      subtitle = "Top 5 global container routes by total TEU, 2022",
+                      caption = "Source: Bloomberg") + 
+  
+  #Now, we will add labels to the trade routes, that display the amount traded on percent of global inter-continental trade
+  
+  #For North America - Europe route
+  geom_label(
+    data = data.frame(x = -40.02, y = 47.58, label = "16,230 kTEU\n 10% of global trade"),  
+    aes(x = x, y =y, label = label), 
+    colour = "#8cc24e", 
+    hjust = 0.5, 
+    lineheight = .8, 
+    inherit.aes = FALSE, 
+    size = 14, 
+    family = "Roboto", 
+    label.padding = unit(1, "lines")
+  ) + 
+  
+  #For Asia-Europe route
+  geom_label(
+    data = data.frame(x = 35.64, y = 35.12, label = "22,130 kTEU\n 14% of global trade"),  
+    aes(x = x, y =y, label = label), 
+    colour = "#fd7f6f", 
+    hjust = 0.5, 
+    lineheight = .8, 
+    inherit.aes = FALSE, 
+    size = 14, 
+    family = "Roboto", 
+    label.padding = unit(1, "lines")
+  ) +
+  
+  #For North America-South America route
+  geom_label(
+    data = data.frame(x = -36.99, y = 12.26, label = "11,410 kTEU\n 7% of global trade"),  
+    aes(x = x, y =y, label = label), 
+    colour = "#ffb55a", 
+    hjust = 0.5, 
+    lineheight = .8, 
+    inherit.aes = FALSE, 
+    size = 14, 
+    family = "Roboto", 
+    label.padding = unit(1, "lines")
+  ) +
+  
+  #For Asia-Indian Sub Continent & Middle East route
+  geom_label(
+    data = data.frame(x = 92, y = 15.54, label = "10,900 kTEU\n 7% of global trade"),  
+    aes(x = x, y =y, label = label), 
+    colour = "#7eb0d5", 
+    hjust = 0.5, 
+    lineheight = .8, 
+    inherit.aes = FALSE, 
+    size = 14, 
+    family = "Roboto", 
+    label.padding = unit(1, "lines")
+  ) + 
+  
+  #For Asia - North America route
+  geom_label(
+    data = data.frame(x = 147.70, y = 28.88, label = "56,000 kTEU\n 34% of global trade"),  
+    aes(x = x, y =y, label = label), 
+    colour = "#011f5f", 
+    hjust = 0.5, 
+    lineheight = .8, 
+    inherit.aes = FALSE, 
+    size = 14, 
+    family = "Roboto",
+    label.padding = unit(1, "lines")
+  )
+
+
+#Display the map
+container_map
+
+```
+
+
+# Plot 2: Development of Container Throughput over Time
+
+In this plot, we will create a visualization of how the yearly global container port throughput has developed over time. We will do this to see if and how Covid-19 affected the container trade in ports. Our hypothesis was that the port throughput decreased materially because of Covid-19 safety measures, but this turned out to be wrong, since port throughput only experienced a minor stagnation. 
+
+
+```{r container port throughput, warning = FALSE, message = FALSE, fig.width=40, fig.height=20}
+#Set options to avoid scientific notation of high numbers
+options("scipen")
+
+#Set our colour palette
+my_colours <- c("#fd7f6f", "#7eb0d5","#8cc24e", "#ffb55a", "#bd7ebe", "#011f5f")
+
+#Set a label we will use in our plot
+label = "Covid-19 pandemic \n 2020-2022"
+
+#To avoid having a very messy plot, we have chosen some important regions for container trade as well as the world. It is for these regions we will plot the port throughput over time.
+locations <- c("Europe", "Asia", "Northern America", "China", "World", "North America", "South America")
+
+#Create the graph
+container_throughput_plot <- container_throughput %>% 
+  
+  #Only include the regions we want to
+  filter(economy_label %in% locations) %>% 
+  
+  #Create an additional variable to be able to create labels at the end of the plot
+  mutate(name_lab = if_else(year == 2021, economy_label, NA_character_)) %>% 
+  
+  #Start the plot
+  ggplot(aes(x = year, y = TEU/1000, group = economy_label, color = economy_label)) +
+   
+  #Some code for creating manual gridlines, we do this to make the gridlines shorter for aesthetic purposes
+  geom_segment(
+    data = data.frame(x  = -Inf, y = 1000000, xend = 2021, yend = 1000000), 
+    aes(x = x, y = y, xend = xend, yend = yend), 
+    color = "grey90", 
+    inherit.aes = FALSE
+  ) + 
+  geom_segment(
+    data = data.frame(x  = -Inf, y = 750000, xend = 2021, yend = 750000), 
+    aes(x = x, y = y, xend = xend, yend = yend), 
+    color = "grey90", 
+    inherit.aes = FALSE
+  ) + 
+  geom_segment(
+    data = data.frame(x  = -Inf, y = 500000, xend = 2021, yend = 500000), 
+    aes(x = x, y = y, xend = xend, yend = yend), 
+    color = "grey90", 
+    inherit.aes = FALSE
+  ) + 
+  geom_segment(
+    data = data.frame(x  = -Inf, y = 250000, xend = 2021, yend = 250000), 
+    aes(x = x, y = y, xend = xend, yend = yend), 
+    color = "grey90", 
+    inherit.aes = FALSE
+  ) +
+   geom_segment(
+    data = data.frame(x  = -Inf, y = 0, xend = 2021, yend = 0), 
+    aes(x = x, y = y, xend = xend, yend = yend), 
+    color = "grey90", 
+    inherit.aes = FALSE
+  ) +
+  
+  #Create a grey rectangel that covers the Covid-19 pandemic period
+  geom_rect(
+    xmin = 2019.5,
+    xmax = 2021.5,
+    ymin = -Inf,
+    ymax = Inf,
+    fill = "grey90",
+    alpha = 0.1,
+    inherit.aes = FALSE
+  ) + 
+  
+  #Now we add the line plot, by setting them here and not before we ensure that they are above the annotations we added
+  geom_line(size = 3) + 
+  
+  #Add our pre-defined colors
+  scale_colour_manual(values = my_colours) + 
+  
+  #Remove borders and background
+  theme_minimal() + 
+  
+  #Add title, subtitle, axis labels and source
+  labs(title = "Covid-19 had No Material Impact on Yearly Port Throughput...", 
+       subtitle = "Total port throughput in twenty-foot equivalents (TEU), 2010-2022", 
+       x = "Year", 
+       y = "'000 TEU", 
+       caption = "Source: UNCTAD") + 
+  
+  #Set title, subtitle and caption size, font and colors
+  theme(plot.title = element_text(size = 52, family = "Roboto"), 
+        plot.subtitle = element_text(size = 44, color = "grey50", family = "Roboto"), 
+        plot.caption = element_text(size = 32, family = "Roboto")) + 
+  
+  #Left-align the title
+  theme(plot.title.position = "plot") + 
+  
+  #Remove gridlines
+  theme(panel.grid = element_blank()) +
+
+  #Set the limits and breaks as well as formatting for the y and x axis
+  scale_y_continuous(label = scales::comma, limits = c(0, 1050000)) + 
+  scale_x_continuous(limits = c(2010, 2024), breaks = seq(2010, 2022, by = 2)) + 
+  
+  #Increase the size of the axis labels
+  theme(axis.text=element_text(size=44),
+        axis.title=element_text(size=44,face="bold")) +
+  
+  #Set font to Roboto
+  theme(text = element_text(family = "Roboto")) + 
+  
+  #Add annotation for the Covid-19 period
+  geom_label(
+    data = data.frame(x = 2020.5, y = 1000000, label = label), 
+    aes(x = x, y = y, label = label), 
+    colour = "grey15", 
+    hjust = 0.5, 
+    lineheight = .8, 
+    inherit.aes = FALSE, 
+    size = 16, 
+    label.padding = unit(1, "lines")
+  ) + 
+  
+  #Add the data labels at the end of the line and remove the legend
+   geom_text_repel(
+    aes(color = economy_label, label = name_lab),
+    fontface = "bold",
+    size = 16,
+    direction = "y",
+    xlim = c(2022, NA),
+    hjust = 0,
+    segment.size = .7,
+    segment.alpha = .5,
+    segment.linetype = "dotted",
+    box.padding = 0.1,
+    segment.curvature = -0.1,
+    segment.ncp = 3,
+    segment.angle = 20
+  ) +
+  theme(legend.position = "null") 
+
+
+#Display the plot
+container_throughput_plot
+
+```
+
+# Plot 3: Average Waiting Time in Ports
+
+Even though the port throughput wasn't materially impacted by Covid-19 lockdowns and safety measures, we've heard that the congestion and the waiting times for vessels increased during the pandemic. Hence, the purpose of this plot is to visualize this impact, and we have chosen to show how the pandemic impacted the average waiting time in port for vessels. The plot below shows how the average waiting time in ports have developed over time split up between developing nations and developed nations. 
+
+
+```{r port wait times, warning = FALSE, message = FALSE, fig.width=40, fig.height=20}
+
+#Create a vector of month abbreviations to map it to their corresponding month number
+month_abbrev <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+#Set label to be added to the plot
+label = "Covid-19 pandemic\n 2020-2022"
+
+#Create the plot of average wait times in ports
+wait_time_plot <- container_wait_times %>%
+  
+  #Pivot longer to simplify plotting the graph
+  pivot_longer(2:3, 
+               names_to = "country_type", 
+               values_to = "avg_wait_time") %>% 
+  
+  #Make some changes to the date part of the tibble
+  mutate(month_name = substr(date, 1, 3), 
+         year = substr(date, 5, 9), 
+         month_num = match(month_name, month_abbrev), 
+         date = ymd(paste(year, month_num + 1, 01, sep = "-")), 
+         date = date - 1) %>% 
+  
+  #Create the plot
+  ggplot(aes(x = date, y = avg_wait_time, group = country_type, color = country_type)) + 
+  
+  #Create grey box that spans over the time period of the pandemic
+  geom_rect(
+    xmin = ymd("2020-03-01"),
+    xmax = ymd("2022-06-01"),
+    ymin = -Inf,
+    ymax = Inf,
+    fill = "grey90",
+    alpha = 0.2,
+    inherit.aes = FALSE
+  ) + 
+  
+  #Initialize line plot
+  geom_line(size = 2) +
+  
+  #Remove background and borders
+  theme_minimal() + 
+  
+  #Set tile, subtitle, axis labels, source and legend title
+  labs(title = "...but Significantly Increased the Average Wait Time in Ports", 
+       subtitle = "Average wait time in ports for container vessels, 2016-2023", 
+       x = "Year", 
+       y = "Hours", 
+       caption = "Source: Clarkson Research", 
+       color = "") + 
+  
+  #Increase size of axis labels
+  theme(axis.text = element_text(size=40),
+        axis.title = element_text(size=40,face="bold")) +
+  
+  #Set font to Roboto
+  theme(text = element_text(family = "Roboto")) + 
+  
+  #Set title, subtitle and caption size, font and colors
+  theme(plot.title = element_text(size = 52, family = "Roboto"), 
+        plot.subtitle = element_text(size = 46, color = "grey50", family = "Roboto"), 
+        plot.caption = element_text(size = 32, family = "Roboto")) + 
+  
+  #Left-align title
+  theme(plot.title.position = "plot") + 
+  
+  #Remove vertical gridlines and minor horizontal gridlines
+  theme(panel.grid.major.x = element_blank(), 
+        panel.grid.minor = element_blank()) + 
+  
+  #Set the colors of the plot and legend entries
+  scale_color_manual(
+    values = c(developing_countries = "#011f5f", developed_countries = "#fd7f6f"),
+    labels = c(developing_countries = "Developing Countries", developed_countries = "Developed Countries")
+  ) + 
+  
+  #Change position of legend to be bottom of the chart
+  theme(legend.position = "bottom") + 
+  
+  #Set limits of y-axis
+  scale_y_continuous(limits = c(0, 15)) + 
+  
+  #Add label of the Covid-19 pandemic in the plot
+  geom_label(
+    data = data.frame(x = ymd("2021-04-15"), y = 14.5, label = label), 
+    aes(x = x, y = y, label = label), 
+    colour = "grey15", 
+    hjust = 0.5, 
+    lineheight = .8, 
+    inherit.aes = FALSE, 
+    size = 16, 
+    label.padding = unit(1, "lines")
+  ) + 
+  
+  #Increase size of legend
+  theme(legend.key.size = unit(1, "cm"), 
+        legend.text = element_text(size = 40))
+  
+
+#Display the plot
+wait_time_plot
+
+```
+
+# Plot 4: Container Freight Prices: Shanghai Containerized Freight Index
+
+During the pandemic, we know that supply chains were significantly affected by increasing congestion and waiting times as well as a lack of containers following Covid-19 lockdowns. Both of these factors drove the price up of containerized freight, making it very expensive to ship products across the world. The below graph examines the Shanghai Containerized Freight Index's development over time to see if it captures this effect. The index shows the most current freight prices for container transport from main ports in China, and can thus be seen as a spot price for containerized freight
+
+```{r scfi, message = FALSE, warning = FALSE, fig.width=40, fig.height=20}
+
+#Set annotations we will add to the plot
+annotation = "March 11, 2020: WHO declares \n that the Covid-19 outbreak \n is a global pandemic"
+annotation2 = "Reversal in the balance of \n supply and demand due to \n macroeconomic uncertainty \n and end of Covid-19"
+
+
+scfi <- scfi_index %>% 
+  
+  #Create the line plot of the development of the index
+  ggplot(aes(x = date, y = mid_price)) + 
+  geom_line(color = "#011f5f", size = 2) + 
+  
+  #Remove background and border of the plot
+  theme_minimal() + 
+  
+  #Remove vertical gridlines and minor horizontal gridlines
+  theme(panel.grid.major.x = element_blank(), 
+        panel.grid.minor.x = element_blank()) + 
+  
+  #Add title, subtitle, axis labels and source
+  labs(title = "The supply chain issues following Covid-19 significantly increased the price of container freight", 
+       subtitle = "Shanghai Containerized Freight Index, 2014-2023", 
+       x = "Date", 
+       y = "Price", 
+       caption = "Source: Bloomberg") + 
+  
+  #Left-align title
+  theme(plot.title.position = "plot") + 
+  
+  #Set title, subtitle and caption size, font and colors
+  theme(plot.title = element_text(size = 52, family = "Roboto"), 
+        plot.subtitle = element_text(size = 46, color = "grey50", family = "Roboto"), 
+        plot.caption = element_text(size = 32, family = "Roboto")) + 
+  
+  #Add curve for annotation 1, that highlights the start of the price surge during Covid-19
+  geom_curve(
+    data = data.frame(x = as.POSIXct("2019-03-11"), y = 3000, xend = as.POSIXct("2020-03-11"), yend = 920),
+    mapping = aes(x = x, y = y, xend = xend, yend = yend), 
+    colour = "grey15" , 
+    size = 1,
+    curvature = -0.25,
+    inherit.aes = FALSE,
+    #angle = 170,
+    arrow = arrow(length = unit(2, "mm"), type = "closed")
+  ) + 
+  
+  #Add the text next to the start of this curve
+  geom_text(
+    data = data.frame(x = as.POSIXct("2019-02-11"), y = 3300, label = annotation),  
+    aes(x = x, y = y, label = label),
+    colour="grey15",
+    hjust = 0.5,
+    lineheight = 0.8,
+    inherit.aes = FALSE,
+    size = 14
+  )  + 
+  
+  #Add the curve for annotation 2, that highlights the reversal in supply and demand that decreased the price of freight
+  geom_curve(
+    data = data.frame(x = as.POSIXct("2023-03-01"), y = 4500, xend = as.POSIXct("2022-07-01"), yend = 4250),
+    mapping = aes(x = x, y = y, xend = xend, yend = yend), 
+    colour = "grey15" , 
+    size = 1,
+    curvature = -0.25,
+    inherit.aes = FALSE,
+    #angle = 170,
+    arrow = arrow(length = unit(2, "mm"), type = "closed")
+  ) +
+  
+  #Add the text next to this curve
+  geom_text(
+    data = data.frame(x = as.POSIXct("2023-05-01"), y = 4850, label = annotation2),  
+    aes(x = x, y = y, label = label),
+    colour="grey15",
+    hjust = 0.5,
+    lineheight = 0.8,
+    inherit.aes = FALSE,
+    size = 14
+  ) +
+  
+  #Set font to Roboto
+  theme(text = element_text(family = "Roboto")) + 
+  
+  #Increase size of axis
+  theme(axis.text=element_text(size=40),
+        axis.title=element_text(size=40,face="bold"))
+
+#Display the plot
+scfi
+
+```
+
+# Plot 5: EBIT margins of top container carriers
+
+We are now curious to see how the container carriers were affected by this price surge. Our hypothesis was that one of the factors driving up the price of freight was increasing costs of container shipment companies. If this was correct, their profit margins should've stayed relatively constant throughout the pandemic. If the profit margins increased, on the other hand, that would mean that they benefitted from the price surge and were able to pass on all increasing costs as well as gain even more money from the problems in the shipping world. It turned out that the profit margins surged with the price, almost reaching 60% EBIT margins from below 10% pre-Covid. 
+
+
+```{r EBIT margins of container carriers, message = FALSE, warning = FALSE, fig.width=40, fig.height=20}
+
+EBIT_containers <- containers_EBIT %>%
+  
+  #Some initial data wrangling of the date, to be able to plot it, now it's in quarter-year format but we need it as a date
+  mutate(year = substr(quarter, 4, length(quarter)),
+         quarter = substr(quarter, 1, 2), 
+         month = ifelse(quarter == "Q1", 03, ifelse(quarter == "Q2", 06, ifelse(quarter == "Q3", 09, 12))), 
+         year_month = as.Date(paste0(year, "-", month, "-", 30))) %>% 
+  
+  #Create a bar chart over the average profit margins
+  ggplot(aes(x = year_month, y = average_ebit_margin)) + 
+  geom_col(fill = "#011F5F") + 
+  
+  #Remove background and borders
+  theme_minimal() + 
+  
+  #Add title, subtitle, axis labels and source
+  labs(title = "Significantly favouring the large container shipping companies", 
+       subtitle = "Average EBIT margins for top container shipping companies, 2014-2023", 
+       x = "Date", 
+       y = "Average EBIT margin", 
+       caption = "Source: Statista") + 
+  
+  #Set title, subtitle and caption size, font and colors
+  theme(plot.title = element_text(size = 52, family = "Roboto"), 
+        plot.subtitle = element_text(size = 46, color = "grey50", family = "Roboto"), 
+        plot.caption = element_text(size = 32, family = "Roboto")) + 
+  
+  #Left-align title
+  theme(plot.title.position = "plot") + 
+  
+  #Remove vertical gridlines and minor horizontal
+  theme(panel.grid.minor = element_blank(), 
+        panel.grid.major.x = element_blank()) + 
+  
+  #Format the y-axis and manually set the limits and breaks
+  scale_y_continuous(labels = scales:: percent, limits = c(-0.1, 0.6), breaks = seq(-0.1, 0.6, by = 0.1) ) +
+  
+  #Increase the size of the axis labels
+  theme(axis.text=element_text(size=40),
+        axis.title=element_text(size=40,face="bold")) + 
+  
+  #Expand the x axis slightly
+  scale_x_date(expand = c(0.1, 0.05))
+
+
+#Display the plot
+EBIT_containers
+
+
+```
+
+
