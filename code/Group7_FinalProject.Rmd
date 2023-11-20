@@ -801,6 +801,81 @@ EBIT_containers
 
 ```
 
+# Plot 6 Dry Bulk Price: Baltic Dry Index
+
+```{r, BDI index, warning = FALSE, message = FALSE, fig.width=40, fig.height=20}
+
+
+#Set annotations we will add to the plot
+annotation = "March 11, 2020: WHO declares \n that the Covid-19 outbreak \n is a global pandemic"
+
+balt_dry <- baltic_dry_index %>% 
+  
+  #Create the line plot of the development of the index
+  ggplot(aes(x = month_year, y = price)) + 
+  geom_line(color = "#011f5f", size = 2) +
+  
+  #Remove background and border of the plot
+  theme_minimal()+
+  
+  #Remove vertical gridlines and minor horizontal gridlines
+  theme(panel.grid.major.x = element_blank(), 
+        panel.grid.minor.x = element_blank()) + 
+  
+  #Add title, subtitle, axis labels and source
+  labs(title = "...A Similar Pattern Can Be Seen In The Dry Bulk Shipping Industry", 
+       subtitle = "Baltic Dry Index, 2014-2023", 
+       x = "Date", 
+       y = "Price", 
+       caption = "Source: Bloomberg") + 
+  
+  #Left-align title
+  theme(plot.title.position = "plot") + 
+  
+  #Set title, subtitle and caption size, font and colors
+  theme(plot.title = element_text(size = 52, family = "Roboto"), 
+        plot.subtitle = element_text(size = 46, color = "grey50", family = "Roboto"), 
+        plot.caption = element_text(size = 32, family = "Roboto")) +
+  
+  
+  
+  #Add curve for annotation 1, that highlights the start of the price surge during Covid-19
+  geom_curve(
+    data = data.frame(x = ymd("2020-03-01"), y = 3000, xend = ymd("2020-02-01"), yend = 920),
+    mapping = aes(x = x, y = y, xend = xend, yend = yend), 
+    colour = "grey15" , 
+    size = 2,
+    curvature = -0.25,
+    inherit.aes = FALSE,
+    arrow = arrow(length = unit(2, "mm"), type = "closed")
+  ) + 
+  
+  #Add the text next to the start of this curve
+  geom_text(
+    data = data.frame(x = ymd("2020-02-01"), y = 3400, label = annotation),  
+    aes(x = x, y = y, label = label),
+    colour="grey15",
+    hjust = 0.5,
+    lineheight = 0.4,
+    inherit.aes = FALSE,
+    size = 14
+  )  +
+
+  
+  #Set font to Roboto
+  theme(text = element_text(family = "Roboto")) + 
+  
+  #Increase size of axis
+  theme(axis.text=element_text(size=40),
+        axis.title=element_text(size=40,face="bold"))
+
+#Display the plot
+balt_dry
+
+ggsave(here::here("images", "Baltic_dry_index.jpg"), balt_dry, width = 20, height = 10, units = "in")
+```
+
+
 # Plot 7: Covid-19 impact on global crude oil import
 ```{r global crude import, message = FALSE， warning= FALSE, fig.width = 20, fig.height = 10}
 options("scipen")
