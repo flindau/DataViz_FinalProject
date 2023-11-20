@@ -877,6 +877,7 @@ ggsave(here::here("images", "Baltic_dry_index.jpg"), balt_dry, width = 20, heigh
 
 
 # Plot 7: Covid-19 impact on global crude oil import
+
 ```{r global crude import, message = FALSE， warning= FALSE, fig.width = 20, fig.height = 10}
 options("scipen")
 
