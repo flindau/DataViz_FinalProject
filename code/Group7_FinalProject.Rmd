@@ -16,8 +16,6 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Load libraries and fonts
-
 ```{r load libraries and fonts, warning = FALSE, message = FALSE, include = FALSE}
 library(tidyverse)
 library(readxl)
