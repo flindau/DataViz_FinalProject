@@ -1,0 +1,300 @@
+country,Year,Import,Export
+Canada,2000,0.56,0.79
+Canada,2001,0.51,0.73
+Canada,2002,0.63,0.67
+Canada,2003,0.53,0.64
+Canada,2004,0.61,0.67
+Canada,2005,0.61,0.66
+Canada,2006,0.56,0.67
+Canada,2007,0.67,0.78
+Canada,2008,0.36,0.78
+Canada,2009,0.36,0.72
+Canada,2010,0.24,0.92
+Canada,2011,0.23,1.03
+Canada,2012,0.22,0.99
+Canada,2013,0.26,1.13
+Canada,2014,0.22,1
+Canada,2015,0.19,0.86
+Canada,2016,0.22,0.94
+Canada,2017,0.23,0.99
+Canada,2018,0.22,1.13
+Canada,2019,0.21,1.02
+Canada,2020,0.17,0.95
+Canada,2021,0.19,0.97
+Canada,2022,0.17,0.97
+Mexico,2000,0.11,NA
+Mexico,2001,0.17,NA
+Mexico,2002,0.21,NA
+Mexico,2003,0.12,NA
+Mexico,2004,0.21,NA
+Mexico,2005,0.22,NA
+Mexico,2006,0.16,NA
+Mexico,2007,0.13,NA
+Mexico,2008,0.18,NA
+Mexico,2009,0.22,NA
+Mexico,2010,0.21,NA
+Mexico,2011,0.22,NA
+Mexico,2012,0.2,NA
+Mexico,2013,0.22,NA
+Mexico,2014,0.23,NA
+Mexico,2015,0.21,NA
+Mexico,2016,0.34,NA
+Mexico,2017,0.22,NA
+Mexico,2018,0.2,NA
+Mexico,2019,0.24,NA
+Mexico,2020,0.13,NA
+Mexico,2021,0.05,NA
+Mexico,2022,0.05,NA
+US,2000,0.56,1.6
+US,2001,0.51,1.39
+US,2002,0.7,1.04
+US,2003,0.85,1.15
+US,2004,0.84,1.31
+US,2005,1,1.32
+US,2006,0.96,1.27
+US,2007,0.93,1.38
+US,2008,0.57,2.08
+US,2009,0.51,1.45
+US,2010,0.36,2.02
+US,2011,0.27,2.5
+US,2012,0.24,3.02
+US,2013,0.28,2.88
+US,2014,0.28,2.38
+US,2015,0.25,1.89
+US,2016,0.19,2.39
+US,2017,0.27,3.02
+US,2018,0.24,2.88
+US,2019,0.17,2.21
+US,2020,0.15,1.74
+US,2021,0.14,2.18
+US,2022,0.16,2.25
+S. & Cent. America,2000,0.51,NA
+S. & Cent. America,2001,0.51,NA
+S. & Cent. America,2002,0.6,NA
+S. & Cent. America,2003,0.65,NA
+S. & Cent. America,2004,0.62,NA
+S. & Cent. America,2005,0.63,NA
+S. & Cent. America,2006,0.71,NA
+S. & Cent. America,2007,0.99,NA
+S. & Cent. America,2008,0.67,NA
+S. & Cent. America,2009,0.85,NA
+S. & Cent. America,2010,0.99,NA
+S. & Cent. America,2011,0.88,NA
+S. & Cent. America,2012,1.06,NA
+S. & Cent. America,2013,1.06,NA
+S. & Cent. America,2014,1,NA
+S. & Cent. America,2015,1.06,NA
+S. & Cent. America,2016,1.23,NA
+S. & Cent. America,2017,0.88,NA
+S. & Cent. America,2018,1.06,NA
+S. & Cent. America,2019,1.12,NA
+S. & Cent. America,2020,1.04,NA
+S. & Cent. America,2021,1.29,NA
+S. & Cent. America,2022,1.07,NA
+Europe,2000,4.74,0.04
+Europe,2001,4.68,0.08
+Europe,2002,5.46,0.1
+Europe,2003,5.7,0.53
+Europe,2004,5.95,0.26
+Europe,2005,6.26,0.12
+Europe,2006,6.77,0.08
+Europe,2007,6.2,0.14
+Europe,2008,5.01,0.25
+Europe,2009,4.82,0.23
+Europe,2010,5.63,0.12
+Europe,2011,6.09,0.16
+Europe,2012,5.85,0.2
+Europe,2013,6.09,0.68
+Europe,2014,6.03,0.13
+Europe,2015,5.4,0.1
+Europe,2016,5.86,0.19
+Europe,2017,6.09,0.2
+Europe,2018,5.85,0.68
+Europe,2019,5.1,0.24
+Europe,2020,3.91,0.22
+Europe,2021,4.43,0.25
+Europe,2022,4.87,0.16
+CIS,2000,0.6,NA
+CIS,2001,0.46,NA
+CIS,2002,0.55,NA
+CIS,2003,0.5,NA
+CIS,2004,0.5,NA
+CIS,2005,0.56,NA
+CIS,2006,0.52,NA
+CIS,2007,0.68,NA
+CIS,2008,0.52,NA
+CIS,2009,0.37,NA
+CIS,2010,0.59,NA
+CIS,2011,0.53,NA
+CIS,2012,0.56,NA
+CIS,2013,0.56,NA
+CIS,2014,0.53,NA
+CIS,2015,0.48,NA
+CIS,2016,0.6,NA
+CIS,2017,0.53,NA
+CIS,2018,0.56,NA
+CIS,2019,0.7,NA
+CIS,2020,0.66,NA
+CIS,2021,0.64,NA
+CIS,2022,0.49,NA
+Middle East,2000,0.48,NA
+Middle East,2001,0.34,NA
+Middle East,2002,0.34,NA
+Middle East,2003,0.43,NA
+Middle East,2004,0.33,NA
+Middle East,2005,0.26,NA
+Middle East,2006,0.35,NA
+Middle East,2007,0.53,NA
+Middle East,2008,0.4,NA
+Middle East,2009,0.35,NA
+Middle East,2010,0.43,NA
+Middle East,2011,0.49,NA
+Middle East,2012,0.44,NA
+Middle East,2013,0.49,NA
+Middle East,2014,0.38,NA
+Middle East,2015,0.34,NA
+Middle East,2016,0.37,NA
+Middle East,2017,0.49,NA
+Middle East,2018,0.44,NA
+Middle East,2019,0.32,NA
+Middle East,2020,0.36,NA
+Middle East,2021,0.33,NA
+Middle East,2022,0.22,NA
+Africa,2000,0.32,NA
+Africa,2001,0.3,NA
+Africa,2002,0.94,NA
+Africa,2003,0.28,NA
+Africa,2004,0.37,NA
+Africa,2005,0.34,NA
+Africa,2006,0.4,NA
+Africa,2007,0.34,NA
+Africa,2008,0.26,NA
+Africa,2009,0.32,NA
+Africa,2010,0.34,NA
+Africa,2011,0.31,NA
+Africa,2012,0.81,NA
+Africa,2013,0.37,NA
+Africa,2014,0.44,NA
+Africa,2015,0.5,NA
+Africa,2016,0.63,NA
+Africa,2017,0.31,NA
+Africa,2018,0.81,NA
+Africa,2019,0.92,NA
+Africa,2020,0.53,NA
+Africa,2021,0.71,NA
+Africa,2022,0.73,NA
+China,2000,0.07,1.89
+China,2001,0.28,2.45
+China,2002,0.29,2.72
+China,2003,0.49,2.79
+China,2004,0.67,2.09
+China,2005,0.96,2.18
+China,2006,1.28,2
+China,2007,1.04,1.81
+China,2008,3.28,1.57
+China,2009,4.45,0.59
+China,2010,5.2,0.59
+China,2011,6.71,0.44
+China,2012,7.63,0.28
+China,2013,6.62,0.28
+China,2014,4.69,0.36
+China,2015,5.65,0.45
+China,2016,5.87,0.42
+China,2017,6.71,0.28
+China,2018,7.63,0.28
+China,2019,6.4,0.34
+China,2020,6.61,0.18
+China,2021,6.67,0.28
+China,2022,5.83,0.32
+India,2000,0.5,NA
+India,2001,0.53,NA
+India,2002,0.54,NA
+India,2003,0.55,NA
+India,2004,0.94,NA
+India,2005,1,NA
+India,2006,1.28,NA
+India,2007,1.41,NA
+India,2008,1.8,NA
+India,2009,2,NA
+India,2010,2.37,NA
+India,2011,3.09,NA
+India,2012,3.66,NA
+India,2013,4.65,NA
+India,2014,4.92,NA
+India,2015,6.46,NA
+India,2016,5.25,NA
+India,2017,3.09,NA
+India,2018,3.66,NA
+India,2019,4.7,NA
+India,2020,4.79,NA
+India,2021,4.69,NA
+India,2022,5.01,NA
+Japan,2000,4.19,NA
+Japan,2001,4.26,NA
+Japan,2002,4.49,NA
+Japan,2003,4.84,NA
+Japan,2004,4.83,NA
+Japan,2005,4.7,NA
+Japan,2006,4.94,NA
+Japan,2007,5.03,NA
+Japan,2008,4.22,NA
+Japan,2009,4.84,NA
+Japan,2010,4.61,NA
+Japan,2011,4.87,NA
+Japan,2012,5.06,NA
+Japan,2013,5,NA
+Japan,2014,5.05,NA
+Japan,2015,5.01,NA
+Japan,2016,5.06,NA
+Japan,2017,4.87,NA
+Japan,2018,5.06,NA
+Japan,2019,4.9,NA
+Japan,2020,4.56,NA
+Japan,2021,4.84,NA
+Japan,2022,4.82,NA
+South Korea,2000,1.79,NA
+South Korea,2001,1.87,NA
+South Korea,2002,1.91,NA
+South Korea,2003,2.1,NA
+South Korea,2004,2.03,NA
+South Korea,2005,2.1,NA
+South Korea,2006,2.33,NA
+South Korea,2007,2.64,NA
+South Korea,2008,2.69,NA
+South Korea,2009,3.11,NA
+South Korea,2010,3.38,NA
+South Korea,2011,3.3,NA
+South Korea,2012,3.32,NA
+South Korea,2013,3.43,NA
+South Korea,2014,3.54,NA
+South Korea,2015,3.53,NA
+South Korea,2016,3.89,NA
+South Korea,2017,3.3,NA
+South Korea,2018,3.32,NA
+South Korea,2019,3.73,NA
+South Korea,2020,3.28,NA
+South Korea,2021,3.35,NA
+South Korea,2022,3.34,NA
+Other Asia Pacific,2000,1.9,0.12
+Other Asia Pacific,2001,2.33,0.14
+Other Asia Pacific,2002,2.1,0.2
+Other Asia Pacific,2003,1.42,0.25
+Other Asia Pacific,2004,2.59,0.35
+Other Asia Pacific,2005,2.8,0.48
+Other Asia Pacific,2006,3.01,0.7
+Other Asia Pacific,2007,2.98,0.86
+Other Asia Pacific,2008,2.79,0.66
+Other Asia Pacific,2009,3.18,0.82
+Other Asia Pacific,2010,3.29,0.76
+Other Asia Pacific,2011,3.65,1.01
+Other Asia Pacific,2012,3.61,0.9
+Other Asia Pacific,2013,2.73,0.92
+Other Asia Pacific,2014,3.96,0.77
+Other Asia Pacific,2015,4.6,0.65
+Other Asia Pacific,2016,5,0.32
+Other Asia Pacific,2017,3.65,0.9
+Other Asia Pacific,2018,3.61,0.92
+Other Asia Pacific,2019,5.26,0.6
+Other Asia Pacific,2020,6.39,0.34
+Other Asia Pacific,2021,6.33,0.37
+Other Asia Pacific,2022,5.72,0.44
